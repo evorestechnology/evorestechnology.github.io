@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Team | EvoRES Technology LLP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@100;300;600&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
+    <style>
+        :root { 
+            --black: #000; 
+            --white: #fff; 
+            --transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1); 
+            --gold-glow: rgba(212, 175, 55, 0.5);
+        }
+        
+        /* --- THE PERMANENT BRANDING FIX --- */
+        .brand-vo {
+            font-family: 'Inter', sans-serif !important;
+            text-transform: lowercase !important;
+            font-weight: 600 !important;
+            display: inline-block;
+            vertical-align: baseline;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--black); color: var(--white); font-family: 'Inter', sans-serif; }
+        
+        /* --- Synchronized Navigation --- */
+        nav { 
+            padding: 0.5rem 3%; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            position: fixed; 
+            width: 100%; 
+            z-index: 1000; 
+            background: rgba(0,0,0,0.9); 
+            border-bottom: 1px solid rgba(255,255,255,0.1); 
+            white-space: nowrap;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo-img {
+            height: 85px; 
+            width: auto;
+            margin-right: 15px;
+            filter: drop-shadow(0 0 10px var(--gold-glow)); 
+            transition: var(--transition);
+        }
+
+        .logo-container:hover .logo-img {
+            filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.7));
+            transform: scale(1.03);
+        }
+
+        .logo-text {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links a { 
+            color: var(--white); 
+            text-decoration: none; 
+            margin-left: 1.5rem; 
+            font-size: 0.65rem; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            font-weight: 300; 
+            transition: var(--transition); 
+            opacity: 0.5; 
+        }
+
+        .nav-links a:hover { opacity: 1; text-shadow: 0 0 10px #fff; }
+
+        .nav-links a.disabled {
+            opacity: 0.15;
+            cursor: not-allowed;
+        }
+
+        /* --- Team Content --- */
+        .hero { height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #111 0%, #000 100%); }
+        .hero h1 { font-family: 'Syncopate', sans-serif; font-size: 4rem; letter-spacing: 15px; text-transform: uppercase; }
+
+        .team-section { padding: 100px 10%; }
+        .category-title { font-family: 'Syncopate', sans-serif; letter-spacing: 8px; font-size: 0.8rem; border-bottom: 1px solid #333; padding-bottom: 1rem; margin-bottom: 4rem; opacity: 0.5; text-align: center; }
+
+        .member-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 4rem; margin-bottom: 8rem; }
+        .member-card { text-align: center; transition: var(--transition); }
+        .member-card:hover { transform: translateY(-10px); }
+        
+        .photo-box { 
+            width: 250px; height: 300px; background: #111; margin: 0 auto 2rem; 
+            border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center;
+            overflow: hidden; filter: grayscale(100%); transition: var(--transition);
+        }
+        .member-card:hover .photo-box { border-color: #fff; box-shadow: 0 0 30px rgba(255,255,255,0.1); filter: grayscale(0%); }
+        .photo-box img { width: 100%; height: 100%; object-fit: cover; opacity: 0.5; }
+
+        .member-card h3 { font-family: 'Syncopate', sans-serif; font-size: 1rem; letter-spacing: 2px; margin-bottom: 0.5rem; }
+        .role { color: #888; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 1.5rem; display: block; }
+        .bio { font-size: 0.9rem; color: #555; line-height: 1.6; max-width: 280px; margin: 0 auto; font-weight: 300; }
+        .member-card:hover .bio { color: #ccc; }
+
+        footer { padding: 80px 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
+        .footer-logo { font-family: 'Syncopate', sans-serif; letter-spacing: 6px; font-size: 1.3rem; opacity: 0.8; color: var(--white); }
+
+        @media (max-width: 1024px) {
+            .nav-links { display: none; }
+            nav { padding: 1rem 5%; }
+            .logo-img { height: 60px; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo-container">
+            <img src="/images/EvoRES logo.png" alt="EvoRES Logo" class="logo-img">
+            <span class="logo-text">E<span class="brand-vo">vo</span>RES TECHNOLOGY LLP</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html#about">About</a>
+            <a href="index.html#mission">Mission</a>
+            <a href="index.html#products">Products</a>
+            <a href="team.html">Our Team</a>
+            <a href="career.html">Careers</a>
+            <a href="index.html#contact">Contact</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>OUR TEAM</h1>
+    </header>
+
+    <section class="team-section">
+        <h2 class="category-title">THE FOUNDERS</h2>
+        <div class="member-grid">
+            <div class="member-card">
+                <div class="photo-box"><img src="/images/Pranay.jpeg" alt="Co-Founder"></div>
+                <h3>PRANAY SWAROOP</h3>
+                <span class="role"><h3>CEO & Co-Founder </h3></span>
+                <p class="bio">“Focused on solving real-world problems and simplifying everyday life.”</p>
+            </div>
+            <div class="member-card">
+                <div class="photo-box"><img src="/images/M.jpeg" alt="Co-Founder"></div>
+                <h3>MUNEENDER</h3>
+                <span class="role"><h3>COO & Co-Founder</h3></span>
+                <p class="bio">“Focused on building impactful and scalable solutions.”</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo"><b>E<span class="brand-vo">vo</span>RES TECHNOLOGY LLP</b></div>
+        <p style="font-size: 0.6rem; letter-spacing: 3px; margin-top: 20px; opacity: 0.3;">© 2026 E<span class="brand-vo">vo</span>RES TECHNOLOGY LLP</p>
+    </footer>
+</body>
+</html>

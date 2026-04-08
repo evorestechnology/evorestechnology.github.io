@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EvoRES TECHNOLOGY LLP | Noir Luxury</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@100;300;600&family=Playfair+Display:ital,wght@0,900;1,900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        :root {
+            --black: #000000;
+            --white: #ffffff;
+            --glow: rgba(255, 255, 255, 0.4);
+            --transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            --gold-glow: rgba(212, 175, 55, 0.5);
+        }
+
+        /* --- THE PERMANENT BRANDING FIX --- */
+        .brand-vo {
+            font-family: 'Inter', sans-serif !important;
+            text-transform: lowercase !important;
+            font-weight: 400 !important;
+            display: inline-block;
+            vertical-align: baseline;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background: var(--black);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--black);
+            color: var(--white);
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Custom Scrollbar --- */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--black);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--white);
+        }
+
+        /* --- Navigation --- */
+        nav {
+            padding: 0.5rem 3%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(0, 0, 0, 0.95);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            white-space: nowrap;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .logo-img {
+            height: 85px;
+            width: auto;
+            margin-right: -30px;
+            filter: drop-shadow(0 0 10px var(--gold-glow));
+            transition: var(--transition);
+        }
+
+        .logo-container:hover .logo-img {
+            filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.7));
+            transform: scale(1.03);
+        }
+
+        .logo-text {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 2px;
+            font-weight: 700;
+            color: var(--white);
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            margin-left: 1.5rem;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 300;
+            transition: var(--transition);
+            opacity: 0.5;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            text-shadow: 0 0 10px var(--white);
+        }
+
+        .nav-links a.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* --- Hero --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
+        }
+
+        .hero h1 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: clamp(1.8rem, 8vw, 4.5rem);
+            margin-bottom: 1rem;
+            letter-spacing: 10px;
+            text-transform: uppercase;
+            animation: glowText 3s infinite alternate;
+        }
+
+        @keyframes glowText {
+            from {
+                text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+            }
+
+            to {
+                text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+            }
+        }
+
+        .hero p {
+            font-size: 0.9rem;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            font-weight: 100;
+            margin-bottom: 3rem;
+            opacity: 0.6;
+        }
+
+        .btn {
+            padding: 1.2rem 4rem;
+            border: 1px solid var(--white);
+            background: transparent;
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            position: relative;
+        }
+
+        .btn:hover {
+            background: var(--white);
+            color: var(--black);
+            transform: scale(1.05);
+        }
+
+        /* --- Sections --- */
+        .section {
+            padding: 15%;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .section-header span {
+            color: var(--white);
+            text-transform: uppercase;
+            letter-spacing: 10px;
+            font-size: 0.7rem;
+            display: block;
+            margin-bottom: 1.5rem;
+            opacity: 0.4;
+        }
+
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 900;
+            font-style: italic;
+            margin-bottom: 3rem;
+        }
+
+        /* --- Product Cards (HORIZONTAL SCROLL UPDATE) --- */
+        .horizontal-scroll {
+            display: flex;
+            overflow-x: auto;
+            gap: 2rem;
+            padding: 2rem;
+            /* Space for hover shadow */
+            scroll-snap-type: x mandatory;
+        }
+
+        /* Styling the horizontal scrollbar specifically for the product section */
+        .horizontal-scroll::-webkit-scrollbar-track {
+            background: rgba(255, 0, 0, 0);
+            border-radius: 10px;
+        }
+
+        .horizontal-scroll::-webkit-scrollbar-thumb {
+            background: rgb(255, 255, 255);
+            border-radius: 10px;
+        }
+
+        .card {
+            flex: 0 0 350px;
+            /* Prevents cards from shrinking and sets fixed width */
+            scroll-snap-align: start;
+            background: var(--black);
+            padding: 4rem 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            border-color: var(--white);
+            box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+            transform: translateY(-10px);
+        }
+
+        .card h3 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            letter-spacing: 3px;
+        }
+
+        .card p {
+            color: #666;
+            line-height: 1.6;
+            font-weight: 300;
+            transition: var(--transition);
+        }
+
+        .card:hover p {
+            color: #fff;
+        }
+
+        .badge {
+            font-size: 0.6rem;
+            letter-spacing: 2px;
+            color: var(--white);
+            border: 1px solid var(--white);
+            padding: 4px 10px;
+            text-transform: uppercase;
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            opacity: 0.5;
+        }
+
+        /* --- Contact Luxury --- */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 4rem;
+        }
+
+        .contact-item {
+            border-left: 1px solid rgba(255, 255, 255, 0.2);
+            padding-left: 30px;
+            margin-bottom: 2rem;
+            transition: var(--transition);
+        }
+
+        .contact-item:hover {
+            border-left: 1px solid var(--white);
+            padding-left: 40px;
+        }
+
+        .contact-item h4 {
+            font-size: 0.7rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .contact-item a,
+        .contact-item p {
+            font-size: 1.3rem;
+            color: #fff;
+            text-decoration: none;
+            font-weight: 200;
+        }
+
+        .social-links a {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-right: 2rem;
+            transition: var(--transition);
+            opacity: 0.4;
+        }
+
+        .social-links a:hover {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+
+        /* --- Footer --- */
+        footer {
+            padding: 100px 5% 50px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-logo {
+            font-family: 'Syncopate', sans-serif;
+            letter-spacing: 6px;
+            font-size: 1.3rem;
+            opacity: 0.8;
+        }
+
+        .copyright {
+            margin-top: 20px;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            opacity: 0.3;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 1024px) {
+            .nav-links {
+                display: none;
+            }
+
+            .section-header h2 {
+                font-size: 2.5rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            nav {
+                padding: 1rem 5%;
+            }
+
+            .logo-img {
+                height: 60px;
+            }
+
+            .card {
+                flex: 0 0 300px;
+            }
+
+            /* Slightly smaller cards on mobile */
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="#" class="logo-container">
+            <img src="/images/EvoRES logo.png" alt="EvoRES Logo" class="logo-img">
+            <span class="logo-text">E<span class="brand-vo"><b>vo</b></span>RES TECHNOLOGY LLP</span>
+        </a>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#mission">Mission</a>
+            <a href="#Products">Products</a>
+            <a href="team.html">Our Team</a>
+            <a href="career.html">Careers</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <p>Research. Engineering. Solutions.</p>
+        <h1>E<span class="brand-vo"><b>vo</b></span>RES TECHNOLOGY</h1>
+        <a href="#Products" class="btn">Our Products</a>
+    </header>
+
+    <section class="section" id="about">
+        <div class="section-header">
+            <span>Identity</span>
+            <h2>About Phase I.</h2>
+        </div>
+        <p
+            style="max-width: 900px; color: #fff; font-size: 1.5rem; font-weight: 200; line-height: 1.6; letter-spacing: 1px;">
+            "We, *<B>E<span class="brand-vo">vo</span>RES Technology</B>*, incorporated as '<b>E<span
+                    class="brand-vo">vo</span>RES Technology LLP</b>' in 2026, are building a premier app-first,
+            product-based Platform-as-a-Service (Paas) company from Andhra Pradesh, India. We are currently in Phase I
+            of our journey,"
+        </p>
+    </section>
+
+    <section class="section" id="mission">
+        <div class="section-header">
+            <span>Mission</span>
+            <h2>Global Impact.</h2>
+        </div>
+        <p
+            style="max-width: 1000px; color: #fff; font-size: 2rem; font-family: 'Playfair Display', serif; font-style: italic; line-height: 1.3;">
+            "Our mission is to create fully India-built software technologies, empowering the Atmanirbhar Bharat vision
+            while simplifying everyday life for global consumers."
+        </p>
+    </section>
+
+    <section class="section" id="Products">
+        <div class="section-header">
+            <span>Products</span>
+            <h2>Softwares.</h2>
+        </div>
+
+        <div class="horizontal-scroll" id="productsList">
+        </div>
+    </section>
+
+    <section class="section" id="contact" style="border-bottom: none;">
+        <div class="section-header">
+            <span>Contact</span>
+            <h2>Get in touch.</h2>
+        </div>
+
+        <div class="contact-grid">
+            <div>
+                <div class="contact-item">
+                    <h4>Direct Line</h4>
+                    <a href="tel:+919177180258">+91 9177180258</a>
+                </div>
+                <div class="contact-item">
+                    <h4>GSTIN</h4>
+                    <p>37AAMFE8739J1ZQ</p>
+                </div>
+                <div class="contact-item">
+                    <h4>Correspondence</h4>
+                    <a href="mailto:evorestechnology@gmail.com">evorestechnology@gmail.com</a>
+                </div>
+                <div class="contact-item">
+                    <h4>HQ</h4>
+                    <p>Vijayawada, Andhra Pradesh, India</p>
+                </div>
+            </div>
+
+            <div>
+                <div class="contact-item" style="border: none;">
+                    <h4>Social Handles</h4>
+                    <div class="social-links">
+                        <a href="https://www.linkedin.com/in/evores-technology" target="_blank"><i
+                                class="fab fa-linkedin"></i></a>
+                        <a href="https://www.instagram.com/evores_technology_official" target="_blank"><i
+                                class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com" target="_blank"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.youtube.com" target="_blank"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div style="margin-top: 3rem;">
+                    <p style="color: #444; font-size: 0.8rem; letter-spacing: 2px;">©2026 E<span
+                            class="brand-vo">vo</span>RES TECHNOLOGY LLP</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-logo">E<span class="brand-vo">vo</span>RES TECHNOLOGY LLP</div>
+        <p class="copyright">PRESTIGE IN EVERY LINE OF CODE.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            const productsContainer = document.getElementById('productsList');
+
+            try {
+                const response = await fetch('products.json');
+                if (!response.ok) throw new Error('Network response was not ok');
+                const products = await response.json();
+
+                productsContainer.innerHTML = products.map(product => `
+                    <div class="card">
+                        <span class="badge">${product.version}</span>
+                        <h3>${product.title}</h3>
+                        <p>${product.description}</p>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error("Failed to load products.json. Showing fallback content.", error);
+                // Fallback content to ensure the page doesn't break if JSON is missing during testing
+                productsContainer.innerHTML = `
+                    <div class="card"><span class="badge">V 1.0</span><h3>HAPPY RIDE</h3><p>“An intercity ride-hailing platform built on a marketplace model, maximizing benefits for both riders and drivers while challenging the traditional aggregator model.”</p></div>
+                    <div class="card"><span class="badge">V 1.0</span><h3>AS SIMPLE AS THAT</h3><p>“A pilot project in next-generation fashion tech, enabling designers to directly sell their creations to consumers and fashion enthusiasts while challenging the traditional textile model.”</p></div>
+                    <div class="card"><span class="badge">V 1.0</span><h3>THE NEWS ARTICLE</h3><p>“A next-generation news platform delivering verified facts in the simplest and most accessible way to consumers.”</p></div>
+                `;
+            }
+        });
+    </script>
+</body>
+
+</html>
