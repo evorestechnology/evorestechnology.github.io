@@ -160,35 +160,38 @@
         "applyUrl": "YOUR_GOOGLE_FORM_LINK"
     },
     {
-        "id": 6,
-        "title": "Firebase Developer Intern",
-        "mode": "Remote",
-        "type": "Internship",
-        "location": "Remote",
-        "description": "Focus on backend architecture and database management for scalable, production-level applications.",
-        "requirements": [
-            "Hands-on experience with Google Firebase (Intermediate level)",
-            "Strong understanding of Firebase Authentication",
-            "Firestore / Realtime Database",
-            "Ability to work with NoSQL databases and API integrations"
-        ],
-        "expectations": [
-            "Candidate must have practical experience",
-            "Minimum 3 hours per day commitment",
-            "Weekend availability for critical tasks",
-            "Open to students and professionals"
-        ],
-        "workOn": [
-            "Backend architecture using Firebase",
-            "Scalable product development",
-            "Cross-team collaboration (frontend & mobile)",
-            "Real-time production applications"
-        ],
-        "growthPath": [
-            "Phase 1 – Internship (0–3 Months): Unpaid evaluation",
-            "Phase 2 – Apprenticeship (3–6 Months): Stipend-based selection",
-            "Phase 3 – Full-Time Opportunity: Merit-based offer"
-        ],
-        "applyUrl": "YOUR_GOOGLE_FORM_LINK"
-    }
+  "id": 6,
+  "title": "Database / Backend Developer Intern",
+  "mode": "Remote",
+  "type": "Internship",
+  "location": "Remote",
+  "description": "Work on backend architecture, database design, and scalable system development using modern databases such as MongoDB, MySQL, and Firebase. The role focuses on building production-ready applications with efficient data handling and API integrations.",
+  "requirements": [
+    "Hands-on experience with at least one database: MongoDB / MySQL / Firebase",
+    "Strong understanding of database design (SQL or NoSQL)",
+    "Experience with Firebase (Authentication, Firestore / Realtime DB) OR REST APIs with backend",
+    "Basic knowledge of backend development (Node.js / Express or similar)",
+    "Understanding of CRUD operations, indexing, and query optimization"
+  ],
+  "expectations": [
+    "Must have practical project experience (not just theoretical knowledge)",
+    "Minimum 3 hours per day commitment",
+    "Availability on weekends for critical tasks if required",
+    "Open to students and early professionals",
+    "Willingness to learn and adapt to different database technologies"
+  ],
+  "workOn": [
+    "Designing and managing databases (SQL & NoSQL)",
+    "Building scalable backend systems",
+    "API development and integration",
+    "Real-time applications using Firebase",
+    "Collaboration with frontend and mobile teams"
+  ],
+  "growthPath": [
+    "Phase 1 – Internship (0–3 Months): Unpaid evaluation",
+    "Phase 2 – Apprenticeship (3–6 Months): Stipend-based selection",
+    "Phase 3 – Full-Time Opportunity: Performance-based offer"
+  ],
+  "applyUrl": "YOUR_GOOGLE_FORM_LINK"
+}
 ]
