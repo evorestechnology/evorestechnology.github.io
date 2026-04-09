@@ -1,0 +1,408 @@
+:root {
+    --black: #000000;
+    --white: #ffffff;
+    --glow: rgba(255, 255, 255, 0.4);
+    --transition: all 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+    --gold-glow: rgba(212, 175, 55, 0.5);
+}
+
+/* --- THE PERMANENT BRANDING FIX --- */
+.brand-vo {
+    font-family: 'Inter', sans-serif !important;
+    text-transform: lowercase !important;
+    font-weight: 400 !important;
+    display: inline-block;
+    vertical-align: baseline;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    background: var(--black);
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- Custom Scrollbar --- */
+::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--black);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--white);
+}
+
+/* --- Navigation --- */
+nav {
+    padding: 0.5rem 3%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    background: rgba(0, 0, 0, 0.95);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    white-space: nowrap;
+}
+
+.logo-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.logo-img {
+    height: 85px;
+    width: auto;
+    margin-right: -30px;
+    filter: drop-shadow(0 0 10px var(--gold-glow));
+    transition: var(--transition);
+}
+
+.logo-container:hover .logo-img {
+    filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.7));
+    transform: scale(1.03);
+}
+
+.logo-text {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    font-weight: 700;
+    color: var(--white);
+    text-transform: uppercase;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+}
+
+.nav-links a {
+    color: var(--white);
+    text-decoration: none;
+    margin-left: 1.5rem;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 300;
+    transition: var(--transition);
+    opacity: 0.5;
+}
+
+.nav-links a:hover {
+    opacity: 1;
+    text-shadow: 0 0 10px var(--white);
+}
+
+.nav-links a.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* --- Hero --- */
+.hero {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    background: radial-gradient(circle at center, #111 0%, #000 100%);
+}
+
+.hero h1 {
+    font-family: 'Syncopate', sans-serif;
+    font-size: clamp(1.8rem, 8vw, 4.5rem);
+    margin-bottom: 1rem;
+    letter-spacing: 10px;
+    text-transform: uppercase;
+    animation: glowText 3s infinite alternate;
+}
+
+@keyframes glowText {
+    from {
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+    }
+
+    to {
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+    }
+}
+
+.hero p {
+    font-size: 0.9rem;
+    letter-spacing: 8px;
+    text-transform: uppercase;
+    font-weight: 100;
+    margin-bottom: 3rem;
+    opacity: 0.6;
+}
+
+.btn {
+    padding: 1.2rem 4rem;
+    border: 1px solid var(--white);
+    background: transparent;
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 5px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: var(--transition);
+    text-decoration: none;
+    position: relative;
+}
+
+.btn:hover {
+    background: var(--white);
+    color: var(--black);
+    transform: scale(1.05);
+}
+
+/* --- Sections --- */
+.section {
+    padding: 10% 15% 15% 15%;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.section-header span {
+    color: var(--white);
+    text-transform: uppercase;
+    letter-spacing: 10px;
+    font-size: 0.7rem;
+    display: block;
+    margin-bottom: 1.5rem;
+    opacity: 0.4;
+}
+
+.section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    font-style: italic;
+    margin-bottom: 3rem;
+}
+
+/* --- Product Cards (HORIZONTAL SCROLL UPDATE) --- */
+.horizontal-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 2rem;
+    padding: 2rem;
+    /* Space for hover shadow */
+    scroll-snap-type: x mandatory;
+}
+
+/* Styling the horizontal scrollbar specifically for the product section */
+.horizontal-scroll::-webkit-scrollbar-track {
+    background: rgba(255, 0, 0, 0);
+    border-radius: 10px;
+}
+
+.horizontal-scroll::-webkit-scrollbar-thumb {
+    background: rgb(255, 255, 255);
+    border-radius: 10px;
+}
+
+.card {
+    flex: 0 0 350px;
+    /* Prevents cards from shrinking and sets fixed width */
+    scroll-snap-align: start;
+    background: var(--black);
+    padding: 4rem 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: var(--transition);
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+}
+
+.card:hover {
+    border-color: var(--white);
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
+    transform: translateY(-10px);
+}
+
+.card h3 {
+    font-family: 'Syncopate', sans-serif;
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+    letter-spacing: 3px;
+}
+
+.card p {
+    color: #666;
+    line-height: 1.6;
+    font-weight: 300;
+    transition: var(--transition);
+}
+
+.card:hover p {
+    color: #fff;
+}
+
+.badge {
+    font-size: 0.6rem;
+    letter-spacing: 2px;
+    color: var(--white);
+    border: 1px solid var(--white);
+    padding: 4px 10px;
+    text-transform: uppercase;
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    opacity: 0.5;
+}
+
+/* --- Contact Luxury --- */
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-top: 4rem;
+}
+
+.contact-item {
+    border-left: 1px solid rgba(255, 255, 255, 0.2);
+    padding-left: 30px;
+    margin-bottom: 2rem;
+    transition: var(--transition);
+}
+
+.contact-item:hover {
+    border-left: 1px solid var(--white);
+    padding-left: 40px;
+}
+
+.contact-item h4 {
+    font-size: 0.7rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.contact-item a,
+.contact-item p {
+    font-size: 1.3rem;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 200;
+}
+
+.social-links a {
+    font-size: 1.5rem;
+    color: #fff;
+    margin-right: 2rem;
+    transition: var(--transition);
+    opacity: 0.4;
+}
+
+.social-links a:hover {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+/* --- Footer --- */
+footer {
+    padding: 100px 5% 50px;
+    text-align: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.footer-logo {
+    font-family: 'Syncopate', sans-serif;
+    letter-spacing: 6px;
+    font-size: 1.3rem;
+    opacity: 0.8;
+}
+
+.copyright {
+    margin-top: 20px;
+    font-size: 0.6rem;
+    letter-spacing: 3px;
+    opacity: 0.3;
+    text-transform: uppercase;
+}
+
+@media (max-width: 1024px) {
+    .nav-links {
+        display: none;
+    }
+
+    .section-header h2 {
+        font-size: 2.5rem;
+    }
+
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+
+    nav {
+        padding: 1rem 5%;
+    }
+
+    .logo-img {
+        height: 60px;
+    }
+
+    .card {
+        flex: 0 0 300px;
+    }
+
+    /* Slightly smaller cards on mobile */
+}
+
+/* --- MOBILE NAVIGATION STACKING --- */
+@media (max-width: 992px) {
+    .section {
+            padding: 20% 15% 15% 15%;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+    nav {
+        flex-direction: column;
+        /* Stacks logo and links vertically */
+        padding: 1rem 5%;
+        height: auto;
+        gap: 15px;
+        /* Adds space between the logo and the links */
+    }
+
+    .nav-links {
+        display: flex;
+        /* Overrides the previous 'none' to show links */
+        flex-wrap: wrap;
+        /* Allows links to wrap if they are too wide */
+        justify-content: center;
+        gap: 1rem;
+        width: 100%;
+    }
+
+    .nav-links a {
+        margin-left: 0;
+        /* Removes the desktop side margin */
+        font-size: 0.6rem;
+        /* Slightly smaller text for better fit */
+    }
+}

@@ -5,94 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Team | EvoRES Technology LLP</title>
     <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@100;300;600&family=Playfair+Display:ital,wght@0,900;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
     <style>
-        :root { 
-            --black: #000; 
-            --white: #fff; 
-            --transition: all 0.6s cubic-bezier(0.19, 1, 0.22, 1); 
-            --gold-glow: rgba(212, 175, 55, 0.5);
-        }
-        
-        /* --- THE PERMANENT BRANDING FIX --- */
-        .brand-vo {
-            font-family: 'Inter', sans-serif !important;
-            text-transform: lowercase !important;
-            font-weight: 600 !important;
-            display: inline-block;
-            vertical-align: baseline;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--black); color: var(--white); font-family: 'Inter', sans-serif; }
-        
-        /* --- Synchronized Navigation --- */
-        nav { 
-            padding: 0.5rem 3%; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            position: fixed; 
-            width: 100%; 
-            z-index: 1000; 
-            background: rgba(0,0,0,0.9); 
-            border-bottom: 1px solid rgba(255,255,255,0.1); 
-            white-space: nowrap;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        .logo-img {
-            height: 85px; 
-            width: auto;
-            margin-right: 15px;
-            filter: drop-shadow(0 0 10px var(--gold-glow)); 
-            transition: var(--transition);
-        }
-
-        .logo-container:hover .logo-img {
-            filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.7));
-            transform: scale(1.03);
-        }
-
-        .logo-text {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 1.1rem;
-            letter-spacing: 2px;
-            font-weight: 700;
-            color: var(--white);
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-        }
-
-        .nav-links a { 
-            color: var(--white); 
-            text-decoration: none; 
-            margin-left: 1.5rem; 
-            font-size: 0.65rem; 
-            letter-spacing: 2px; 
-            text-transform: uppercase; 
-            font-weight: 300; 
-            transition: var(--transition); 
-            opacity: 0.5; 
-        }
-
-        .nav-links a:hover { opacity: 1; text-shadow: 0 0 10px #fff; }
-
-        .nav-links a.disabled {
-            opacity: 0.15;
-            cursor: not-allowed;
-        }
-
         /* --- Team Content --- */
-        .hero { height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #111 0%, #000 100%); }
+        .hero { padding-top: 100px; height: 40vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #111 0%, #000 100%); }
         .hero h1 { font-family: 'Syncopate', sans-serif; font-size: 4rem; letter-spacing: 15px; text-transform: uppercase; }
 
         .team-section { padding: 100px 10%; }
@@ -117,12 +33,6 @@
 
         footer { padding: 80px 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
         .footer-logo { font-family: 'Syncopate', sans-serif; letter-spacing: 6px; font-size: 1.3rem; opacity: 0.8; color: var(--white); }
-
-        @media (max-width: 1024px) {
-            .nav-links { display: none; }
-            nav { padding: 1rem 5%; }
-            .logo-img { height: 60px; }
-        }
     </style>
 </head>
 <body>
@@ -136,7 +46,7 @@
             <a href="index.html#mission">Mission</a>
             <a href="index.html#products">Products</a>
             <a href="team.html">Our Team</a>
-            <a href="career.html">Careers</a>
+            <a href="careers.html">Careers</a>
             <a href="index.html#contact">Contact</a>
         </div>
     </nav>

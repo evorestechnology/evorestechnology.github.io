@@ -1,0 +1,194 @@
+[
+    {
+        "id": 1,
+        "title": "Content Validator (Telugu + English)",
+        "mode": "Remote",
+        "type": "Part-time",
+        "location": "Remote",
+        "description": "We are building a next-generation news platform delivering validated information. We need detail-oriented individuals passionate about fact-checking and content quality.",
+        "requirements": [
+            "Proficient in both Telugu and English",
+            "Strong interest in journalism, fact-checking, or content review",
+            "Ability to research and verify information from reliable sources",
+            "Strong attention to detail and analytical thinking"
+        ],
+        "expectations": [
+            "Ensure accuracy and authenticity before publishing",
+            "Cross-check content with trusted and verified sources",
+            "Maintain consistency in content quality and standards",
+            "Dedicate 2–3 hours per day (Flexible)"
+        ],
+        "workOn": [
+            "Review and validate blogs/articles in Telugu and English",
+            "Verify facts, sources, and accuracy",
+            "Collaborate with writers to maintain publishing standards"
+        ],
+        "growthPath": [
+            "Performance-based earnings / revenue sharing model",
+            "Opportunity to grow into a full-time role based on accuracy and consistency",
+            "Real-world exposure to digital journalism"
+        ],
+        "applyUrl": "YOUR_GOOGLE_FORM_LINK"
+    },
+    {
+        "id": 2,
+        "title": "Content Writer (Telugu + English)",
+        "mode": "Remote",
+        "type": "Part-time",
+        "location": "Remote",
+        "description": "Join our mission to deliver simple and accessible information. We are looking for passionate individuals interested in building a career in journalism.",
+        "requirements": [
+            "Proficient in both Telugu and English",
+            "Strong interest in journalism, news writing, or content creation",
+            "Ability to research and write fact-based content",
+            "Basic understanding of current affairs / trending topics"
+        ],
+        "expectations": [
+            "Take full responsibility for accuracy and authenticity",
+            "Content must be based on validated and reliable sources",
+            "Consistency and quality are key evaluation factors",
+            "Dedicate 2–3 hours per day (Flexible)"
+        ],
+        "workOn": [
+            "Write blogs/articles in combined Telugu and English format",
+            "Create content based on verified facts",
+            "Take full ownership of published content"
+        ],
+        "growthPath": [
+            "Revenue-sharing model (Higher potential based on performance)",
+            "Build a strong writing portfolio",
+            "Direct conversion to full-time based on writing quality and contribution"
+        ],
+        "applyUrl": "YOUR_GOOGLE_FORM_LINK"
+    },
+    {
+        "id": 3,
+        "title": "Frontend UI/UX Developer Intern",
+        "mode": "Remote",
+        "type": "Internship",
+        "location": "Remote",
+        "description": "Work on real-world applications for scalable, app-first technology products. We follow a performance-driven, real-world evaluation model.",
+        "requirements": [
+            "Hands-on experience with frontend development (Intermediate level)",
+            "Strong HTML, CSS, JavaScript knowledge",
+            "Responsive design & layouts",
+            "Basic React (components, props, state basics)",
+            "Knowledge of React Native is a plus"
+        ],
+        "expectations": [
+            "This is NOT a training program; practical experience is required",
+            "Dedicate at least 3 hours per day (flexible timing)",
+            "Available to contribute on weekends when required",
+            "Open to both students and working professionals"
+        ],
+        "workOn": [
+            "Real-time production-level web interfaces",
+            "Building responsive and scalable UI components",
+            "Improving user experience across products",
+            "Design-to-development workflows"
+        ],
+        "growthPath": [
+            "Phase 1 – Internship (0–3 Months): Unpaid, live project evaluation",
+            "Phase 2 – Apprenticeship (3–6 Months): Selected candidates receive stipend",
+            "Phase 3 – Full-Time Opportunity: Direct conversion based on performance"
+        ],
+        "applyUrl": "YOUR_GOOGLE_FORM_LINK"
+    },
+    {
+        "id": 4,
+        "title": "React + Firebase Developer Intern",
+        "mode": "Remote",
+        "type": "Internship",
+        "location": "Remote",
+        "description": "Build scalable products using React and Firebase. This role focuses on end-to-end web application features in a fast-paced environment.",
+        "requirements": [
+            "Hands-on experience with React & Google Firebase (Intermediate level)",
+            "React (components, hooks, state management basics)",
+            "Firebase Authentication",
+            "Firestore / Realtime Database",
+            "API integration & backend connectivity"
+        ],
+        "expectations": [
+            "Practical experience is mandatory (not a training program)",
+            "Minimum 3 hours daily commitment",
+            "Weekend availability as required",
+            "Work From Home (Remote)"
+        ],
+        "workOn": [
+            "Real-time production-level web applications",
+            "Frontend development using React",
+            "Backend integration using Firebase",
+            "Scalable product development"
+        ],
+        "growthPath": [
+            "Phase 1 – Internship (0–3 Months): Live project evaluation",
+            "Phase 2 – Apprenticeship (3–6 Months): Selected stipend-based phase",
+            "Phase 3 – Full-Time Opportunity: Performance-based offer"
+        ],
+        "applyUrl": "YOUR_GOOGLE_FORM_LINK"
+    },
+    {
+        "id": 5,
+        "title": "React Native + Firebase Developer Intern",
+        "mode": "Remote",
+        "type": "Internship",
+        "location": "Remote",
+        "description": "Develop scalable, app-first technology products for mobile platforms using React Native and Firebase.",
+        "requirements": [
+            "Hands-on experience with React Native & Firebase (Intermediate level)",
+            "React Native (components, navigation, state management)",
+            "Firebase Authentication & Firestore",
+            "Ability to build mobile app features end-to-end"
+        ],
+        "expectations": [
+            "Practical experience required; NOT a training program",
+            "3 hours per day minimum (flexible)",
+            "Weekend contribution required when necessary",
+            "Work From Home (Remote)"
+        ],
+        "workOn": [
+            "Real-time production-level mobile applications",
+            "Mobile app development using React Native",
+            "Backend integration using Firebase",
+            "Cross-team collaboration"
+        ],
+        "growthPath": [
+            "Phase 1 – Internship (0–3 Months): Unpaid evaluation",
+            "Phase 2 – Apprenticeship (3–6 Months): Stipend provided",
+            "Phase 3 – Full-Time Opportunity: Direct conversion"
+        ],
+        "applyUrl": "YOUR_GOOGLE_FORM_LINK"
+    },
+    {
+        "id": 6,
+        "title": "Firebase Developer Intern",
+        "mode": "Remote",
+        "type": "Internship",
+        "location": "Remote",
+        "description": "Focus on backend architecture and database management for scalable, production-level applications.",
+        "requirements": [
+            "Hands-on experience with Google Firebase (Intermediate level)",
+            "Strong understanding of Firebase Authentication",
+            "Firestore / Realtime Database",
+            "Ability to work with NoSQL databases and API integrations"
+        ],
+        "expectations": [
+            "Candidate must have practical experience",
+            "Minimum 3 hours per day commitment",
+            "Weekend availability for critical tasks",
+            "Open to students and professionals"
+        ],
+        "workOn": [
+            "Backend architecture using Firebase",
+            "Scalable product development",
+            "Cross-team collaboration (frontend & mobile)",
+            "Real-time production applications"
+        ],
+        "growthPath": [
+            "Phase 1 – Internship (0–3 Months): Unpaid evaluation",
+            "Phase 2 – Apprenticeship (3–6 Months): Stipend-based selection",
+            "Phase 3 – Full-Time Opportunity: Merit-based offer"
+        ],
+        "applyUrl": "YOUR_GOOGLE_FORM_LINK"
+    }
+]

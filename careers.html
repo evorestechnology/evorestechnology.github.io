@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Careers | EvoRES Technology LLP</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=Inter:wght@100;300;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* --- PAGE SPECIFIC STYLES --- */
+        .hero { padding-top: 100px; height: 40vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #111 0%, #000 100%); }
+        .hero h1 { font-family: 'Syncopate', sans-serif; font-size: 4rem; letter-spacing: 15px; text-transform: uppercase; }
+
+        .career-section {
+            padding: 40px 10% 100px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .filter-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .filter-container input,
+        .filter-container select {
+            background: #111;
+            border: 1px solid #333;
+            color: white;
+            padding: 12px 20px;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: var(--transition);
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .job-card {
+            background: #080808;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .job-card:hover {
+            background: #111;
+            border-color: #fff;
+            transform: translateX(10px);
+        }
+
+        .job-meta {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .job-tag {
+            font-size: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            padding: 4px 10px;
+            border: 1px solid #222;
+        }
+
+        .tag-mode {
+            color: #d4af37;
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        /* --- MODAL --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(15px);
+        }
+
+        .modal-content {
+            background: #000;
+            width: 90%;
+            max-width: 800px;
+            max-height: 85vh;
+            padding: 60px;
+            border: 1px solid #333;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .modal-body strong {
+            display: block;
+            margin-top: 20px;
+            margin-bottom: 8px;
+            color: #fff;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            border-left: 2px solid #d4af37;
+            padding-left: 10px;
+        }
+
+        .modal-body p {
+            font-size: 0.95rem;
+            color: #ccc;
+            line-height: 1.7;
+        }
+
+        @media (max-width: 768px) {
+            .career-section {
+                padding: 40px 5%;
+            }
+
+            .modal-content {
+                padding: 30px;
+            }
+
+            .job-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="index.html" class="logo-container">
+            <img src="./images/EvoRES logo.png" alt="EvoRES Logo" class="logo-img">
+            <span class="logo-text">E<span class="brand-vo">vo</span>RES TECHNOLOGY LLP</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html#about">About</a>
+            <a href="index.html#mission">Mission</a>
+            <a href="index.html#products">Products</a>
+            <a href="team.html">Our Team</a>
+            <a href="careers.html">Careers</a>
+            <a href="index.html#contact">Contact</a>
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>CAREERS</h1>
+    </header>
+
+    <section class="career-section">
+        <div class="filter-container">
+            <input type="text" id="jobSearch" placeholder="SEARCH POSITIONS...">
+            <select id="modeFilter">
+                <option value="all">ALL MODES</option>
+            </select>
+            <select id="typeFilter">
+                <option value="all">ALL TYPES</option>
+            </select>
+            <select id="locationFilter">
+                <option value="all">ALL LOCATIONS</option>
+            </select>
+        </div>
+
+        <div id="jobList" class="job-grid"></div>
+    </section>
+
+    <div class="modal-overlay" id="jobModal">
+        <div class="modal-content">
+            <span onclick="closeModal()"
+                style="position:absolute; top:30px; right:30px; cursor:pointer; font-size:2rem; opacity:0.5;">&times;</span>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-logo"><b>E<span class="brand-vo">vo</span>RES TECHNOLOGY LLP</b></div>
+        <p style="font-size: 0.6rem; letter-spacing: 3px; margin-top: 20px; opacity: 0.3;">© 2026 EvoRES TECHNOLOGY LLP
+        </p>
+    </footer>
+
+    <script>
+        let jobsData = [];
+
+        async function loadCareers() {
+            try {
+                const response = await fetch('careers.json');
+                jobsData = await response.json();
+                generateDynamicFilters();
+                displayJobs(jobsData);
+            } catch (error) {
+                document.getElementById('jobList').innerHTML = "<p style='opacity:0.5'>Check back soon.</p>";
+            }
+        }
+
+        function generateDynamicFilters() {
+            const populate = (id, key, label) => {
+                const values = [...new Set(jobsData.map(job => job[key]))];
+                const select = document.getElementById(id);
+                select.innerHTML = `<option value="all">ALL ${label}</option>` +
+                    values.map(val => `<option value="${val}">${val.toUpperCase()}</option>`).join('');
+            };
+            populate('modeFilter', 'mode', 'MODES');
+            populate('typeFilter', 'type', 'TYPES');
+            populate('locationFilter', 'location', 'LOCATIONS');
+        }
+
+        function displayJobs(jobs) {
+            const container = document.getElementById('jobList');
+            if (jobs.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding: 50px; grid-column: 1/-1; border: 1px dashed #333;">
+                        <p style="opacity:0.5; font-family:'Syncopate'; font-size: 0.7rem; letter-spacing: 2px;">
+                            Currently there are no positions available matching these criteria. <br>
+                            We will soon work on it.
+                        </p>
+                    </div>`;
+                return;
+            }
+            container.innerHTML = jobs.map(job => `
+                <div class="job-card" onclick="openModal(${job.id})">
+                    <div>
+                        <div class="job-title" style="font-family:'Syncopate'; letter-spacing:2px; font-size:1.1rem;">${job.title}</div>
+                        <div class="job-meta">
+                            <span class="job-tag tag-mode">${job.mode}</span>
+                            <span class="job-tag">${job.type}</span>
+                            <span class="job-tag" style="opacity:0.5;">${job.location}</span>
+                        </div>
+                    </div>
+                    <div style="font-size: 1.2rem; opacity: 0.3;">&rarr;</div>
+                </div>`).join('');
+        }
+
+        function handleFilters() {
+            const search = document.getElementById('jobSearch').value.toLowerCase();
+            const mode = document.getElementById('modeFilter').value;
+            const type = document.getElementById('typeFilter').value;
+            const loc = document.getElementById('locationFilter').value;
+
+            const filtered = jobsData.filter(job =>
+                job.title.toLowerCase().includes(search) &&
+                (mode === 'all' || job.mode === mode) &&
+                (type === 'all' || job.type === type) &&
+                (loc === 'all' || job.location === loc)
+            );
+            displayJobs(filtered);
+        }
+
+        function openModal(jobId) {
+            const job = jobsData.find(j => j.id === jobId);
+            const content = document.getElementById('modalContent');
+
+            content.innerHTML = `
+                <div style="margin-bottom:20px;">
+                    <span class="job-tag tag-mode">${job.mode}</span>
+                    <span class="job-tag" style="margin-left:10px;">${job.type}</span>
+                </div>
+                <h2 style="font-family:'Syncopate'; font-size:1.6rem; margin-bottom:20px; border-bottom:1px solid #222; padding-bottom:20px;">${job.title.toUpperCase()}</h2>
+                <div class="modal-body">
+                    <p>${job.description}</p>
+                    
+                    <strong>🔧 JOB REQUIREMENTS</strong>
+                    <p>${job.requirements.map(r => `• ${r}`).join('<br>')}</p>
+                    
+                    ${job.expectations ? `<strong>⚠️ IMPORTANT EXPECTATIONS</strong><p>${job.expectations.map(e => `• ${e}`).join('<br>')}</p>` : ''}
+                    
+                    ${job.workOn ? `<strong>🚀 WHAT YOU’LL WORK ON</strong><p>${job.workOn.map(w => `• ${w}`).join('<br>')}</p>` : ''}
+                    
+                    ${job.growthPath ? `<strong>📈 GROWTH PATH</strong><p>${job.growthPath.map(g => `📌 ${g}`).join('<br>')}</p>` : ''}
+                    
+                    <a href="${job.applyUrl}" target="_blank" class="apply-now" style="display:inline-block; margin-top:40px; padding:18px 45px; background:#fff; color:#000; text-decoration:none; font-family:'Syncopate'; font-size:0.7rem; font-weight:700; letter-spacing:3px;">APPLY FOR POSITION</a>
+                </div>`;
+            document.getElementById('jobModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('jobModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        ['jobSearch', 'modeFilter', 'typeFilter', 'locationFilter'].forEach(id =>
+            document.getElementById(id).addEventListener(id === 'jobSearch' ? 'input' : 'change', handleFilters));
+
+        loadCareers();
+    </script>
+</body>
+
+</html>
