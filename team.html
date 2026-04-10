@@ -33,13 +33,23 @@
 
         footer { padding: 80px 5%; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); }
         .footer-logo { font-family: 'Syncopate', sans-serif; letter-spacing: 6px; font-size: 1.3rem; opacity: 0.8; color: var(--white); }
+
+        @media (max-width: 992px) {
+    .logo-break {
+        display: block;
+    }
+}
     </style>
 </head>
 <body>
     <nav>
         <a href="index.html" class="logo-container">
             <img src="./images/EvoRES logo.png" alt="EvoRES Logo" class="logo-img">
-            <span class="logo-text">E<span class="brand-vo">vo</span>RES TECHNOLOGY LLP</span>
+            <span class="logo-text">
+                E<span class="brand-vo"><b>vo</b></span>RES
+                <br class="logo-break">
+                TECHNOLOGY LLP
+            </span>
         </a>
         <div class="nav-links">
             <a href="index.html#about">About</a>

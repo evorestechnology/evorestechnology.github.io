@@ -72,6 +72,7 @@ nav {
 
 .logo-img {
     height: 85px;
+    align-items: center;
     width: auto;
     margin-right: -30px;
     filter: drop-shadow(0 0 10px var(--gold-glow));
@@ -90,6 +91,10 @@ nav {
     font-weight: 700;
     color: var(--white);
     text-transform: uppercase;
+}
+
+.logo-break {
+    display: none;
 }
 
 .nav-links {
@@ -375,6 +380,10 @@ footer {
 
 /* --- MOBILE NAVIGATION STACKING --- */
 @media (max-width: 992px) {
+    .logo-break {
+            display: block;
+        }
+
     .section {
             padding: 20% 15% 15% 15%;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);

@@ -11,8 +11,24 @@
     <link rel="stylesheet" href="style.css">
     <style>
         /* --- PAGE SPECIFIC STYLES --- */
-        .hero { padding-top: 100px; height: 40vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: radial-gradient(circle at center, #111 0%, #000 100%); }
-        .hero h1 { font-family: 'Syncopate', sans-serif; font-size: 4rem; letter-spacing: 15px; text-transform: uppercase; }
+        .hero {
+            padding-top: 100px;
+            height: 40vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
+        }
+
+        .hero h1 {
+            font-family: 'Syncopate', sans-serif;
+            font-size: clamp(1.8rem, 6vw, 4rem);
+            letter-spacing: clamp(5px, 2vw, 15px);
+            text-transform: uppercase;
+            color: #fff;
+        }
 
         .career-section {
             padding: 40px 10% 100px;
@@ -38,9 +54,23 @@
             padding: 12px 20px;
             font-family: 'Inter', sans-serif;
             outline: none;
-            transition: var(--transition);
+            transition: all 0.3s ease;
             flex: 1;
             min-width: 200px;
+        }
+
+        .filter-container select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 15px;
+        }
+
+        .filter-container input:focus,
+        .filter-container select:focus {
+            border-color: #d4af37;
         }
 
         .job-card {
@@ -51,7 +81,8 @@
             justify-content: space-between;
             align-items: center;
             cursor: pointer;
-            transition: var(--transition);
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
         }
 
         .job-card:hover {
@@ -64,18 +95,19 @@
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         .job-tag {
             font-size: 0.6rem;
             text-transform: uppercase;
             letter-spacing: 2px;
-            padding: 4px 10px;
-            border: 1px solid #222;
+            padding: 4px 12px;
+            border: 1px solid #333;
+            color: #888;
         }
 
-        .tag-mode {
+        .tag-important {
             color: #d4af37;
             border-color: rgba(212, 175, 55, 0.3);
         }
@@ -87,7 +119,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.9);
+            background: rgba(0, 0, 0, 0.95);
             z-index: 2000;
             display: none;
             align-items: center;
@@ -108,20 +140,21 @@
 
         .modal-body strong {
             display: block;
-            margin-top: 20px;
-            margin-bottom: 8px;
+            margin-top: 30px;
+            margin-bottom: 12px;
             color: #fff;
             font-family: 'Syncopate', sans-serif;
             font-size: 0.75rem;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             border-left: 2px solid #d4af37;
-            padding-left: 10px;
+            padding-left: 15px;
         }
 
         .modal-body p {
             font-size: 0.95rem;
             color: #ccc;
-            line-height: 1.7;
+            line-height: 1.8;
+            margin-bottom: 15px;
         }
 
         @media (max-width: 768px) {
@@ -146,7 +179,11 @@
     <nav>
         <a href="index.html" class="logo-container">
             <img src="./images/EvoRES logo.png" alt="EvoRES Logo" class="logo-img">
-            <span class="logo-text">E<span class="brand-vo">vo</span>RES TECHNOLOGY LLP</span>
+            <span class="logo-text">
+                E<span class="brand-vo"><b>vo</b></span>RES
+                <br class="logo-break">
+                TECHNOLOGY LLP
+            </span>
         </a>
         <div class="nav-links">
             <a href="index.html#about">About</a>
@@ -182,7 +219,7 @@
     <div class="modal-overlay" id="jobModal">
         <div class="modal-content">
             <span onclick="closeModal()"
-                style="position:absolute; top:30px; right:30px; cursor:pointer; font-size:2rem; opacity:0.5;">&times;</span>
+                style="position:absolute; top:30px; right:30px; cursor:pointer; font-size:2rem; opacity:0.5; color:#fff;">&times;</span>
             <div id="modalContent"></div>
         </div>
     </div>
@@ -196,94 +233,163 @@
     <script>
         let jobsData = [];
 
+        // Holds current user selections
+        const filterState = {
+            search: "",
+            mode: "all",
+            type: "all",
+            location: "all"
+        };
+
+        function normalize(value) {
+            if (!value) return '';
+            return value.toLowerCase().trim().replace(/\s+/g, '-');
+        }
+
+        function isValid(value) {
+            return value && value.trim() !== '';
+        }
+
+        /* ---------------- LOAD DATA ---------------- */
         async function loadCareers() {
             try {
                 const response = await fetch('careers.json');
-                jobsData = await response.json();
-                generateDynamicFilters();
+                const rawData = await response.json();
+
+                // Process data and store normalized versions for filtering
+                jobsData = rawData.map(job => ({
+                    ...job,
+                    modeNorm: normalize(job.mode),
+                    typeNorm: normalize(job.type),
+                    locationNorm: normalize(job.location)
+                }));
+
+                // Populate dropdowns based on ALL available data once
+                generateDynamicFilters(jobsData);
+                // Initial display
                 displayJobs(jobsData);
+
             } catch (error) {
-                document.getElementById('jobList').innerHTML = "<p style='opacity:0.5'>Check back soon.</p>";
+                console.error("Data error:", error);
+                document.getElementById('jobList').innerHTML =
+                    "<p style='opacity:0.5; text-align:center;'>Check back soon for new opportunities.</p>";
             }
         }
 
-        function generateDynamicFilters() {
-            const populate = (id, key, label) => {
-                const values = [...new Set(jobsData.map(job => job[key]))];
-                const select = document.getElementById(id);
-                select.innerHTML = `<option value="all">ALL ${label}</option>` +
-                    values.map(val => `<option value="${val}">${val.toUpperCase()}</option>`).join('');
-            };
-            populate('modeFilter', 'mode', 'MODES');
-            populate('typeFilter', 'type', 'TYPES');
-            populate('locationFilter', 'location', 'LOCATIONS');
-        }
-
-        function displayJobs(jobs) {
-            const container = document.getElementById('jobList');
-            if (jobs.length === 0) {
-                container.innerHTML = `
-                    <div style="text-align:center; padding: 50px; grid-column: 1/-1; border: 1px dashed #333;">
-                        <p style="opacity:0.5; font-family:'Syncopate'; font-size: 0.7rem; letter-spacing: 2px;">
-                            Currently there are no positions available matching these criteria. <br>
-                            We will soon work on it.
-                        </p>
-                    </div>`;
-                return;
-            }
-            container.innerHTML = jobs.map(job => `
-                <div class="job-card" onclick="openModal(${job.id})">
-                    <div>
-                        <div class="job-title" style="font-family:'Syncopate'; letter-spacing:2px; font-size:1.1rem;">${job.title}</div>
-                        <div class="job-meta">
-                            <span class="job-tag tag-mode">${job.mode}</span>
-                            <span class="job-tag">${job.type}</span>
-                            <span class="job-tag" style="opacity:0.5;">${job.location}</span>
-                        </div>
-                    </div>
-                    <div style="font-size: 1.2rem; opacity: 0.3;">&rarr;</div>
-                </div>`).join('');
-        }
-
+        /* ---------------- FILTER ENGINE ---------------- */
         function handleFilters() {
-            const search = document.getElementById('jobSearch').value.toLowerCase();
-            const mode = document.getElementById('modeFilter').value;
-            const type = document.getElementById('typeFilter').value;
-            const loc = document.getElementById('locationFilter').value;
+            filterState.search = document.getElementById('jobSearch').value.toLowerCase();
+            filterState.mode = document.getElementById('modeFilter').value;
+            filterState.type = document.getElementById('typeFilter').value;
+            filterState.location = document.getElementById('locationFilter').value;
 
-            const filtered = jobsData.filter(job =>
-                job.title.toLowerCase().includes(search) &&
-                (mode === 'all' || job.mode === mode) &&
-                (type === 'all' || job.type === type) &&
-                (loc === 'all' || job.location === loc)
-            );
+            const filtered = jobsData.filter(job => {
+                const matchesSearch = job.title.toLowerCase().includes(filterState.search);
+                const matchesMode = filterState.mode === 'all' || job.modeNorm === filterState.mode;
+                const matchesType = filterState.type === 'all' || job.typeNorm === filterState.type;
+                const matchesLoc = filterState.location === 'all' || job.locationNorm === filterState.location;
+
+                return matchesSearch && matchesMode && matchesType && matchesLoc;
+            });
+
             displayJobs(filtered);
         }
 
+        /* ---------------- DYNAMIC FILTERS ---------------- */
+        // This function builds unique options from the JSON data
+        function generateDynamicFilters(data) {
+            const buildOptions = (keyNorm, keyOriginal) => {
+                const uniqueValues = new Map();
+                data.forEach(job => {
+                    if (isValid(job[keyOriginal])) {
+                        uniqueValues.set(job[keyNorm], job[keyOriginal]);
+                    }
+                });
+                return uniqueValues;
+            };
+
+            const populateSelect = (id, optionsMap, label) => {
+                const select = document.getElementById(id);
+                let html = `<option value="all">ALL ${label}</option>`;
+
+                optionsMap.forEach((original, norm) => {
+                    html += `<option value="${norm}">${original.toUpperCase()}</option>`;
+                });
+                select.innerHTML = html;
+            };
+
+            populateSelect('modeFilter', buildOptions('modeNorm', 'mode'), 'MODES');
+            populateSelect('typeFilter', buildOptions('typeNorm', 'type'), 'TYPES');
+            populateSelect('locationFilter', buildOptions('locationNorm', 'location'), 'LOCATIONS');
+        }
+
+        /* ---------------- DISPLAY JOBS ---------------- */
+        function displayJobs(jobs) {
+            const container = document.getElementById('jobList');
+
+            if (jobs.length === 0) {
+                container.innerHTML = `
+                <div style="text-align:center; padding: 60px; grid-column: 1/-1; border: 1px dashed #222;">
+                    <p style="opacity:0.4; font-family:'Syncopate'; font-size: 0.7rem; letter-spacing: 2px;">
+                        NO POSITIONS MATCH THESE CRITERIA.
+                    </p>
+                </div>`;
+                return;
+            }
+
+            container.innerHTML = jobs.map(job => `
+                <div class="job-card" onclick="openModal(${job.id})">
+                    <div>
+                        <div class="job-title" style="font-family:'Syncopate'; letter-spacing:2px; font-size:1.1rem; color:#fff;">
+                            ${job.title}
+                        </div>
+        
+                        <div class="job-meta">
+                            ${isValid(job.mode) ? `<span class="job-tag tag-important">${job.mode}</span>` : ''}
+                            ${isValid(job.type) ? `<span class="job-tag">${job.type}</span>` : ''}
+                            ${job.modeNorm !== 'remote' && isValid(job.location) ?
+                    `<span class="job-tag" style="opacity:0.5;">${job.location}</span>` : ''}
+                        </div>
+                    </div>
+                    <div style="font-size: 1.2rem; opacity: 0.3; color:#fff;">→</div>
+                </div>
+            `).join('');
+        }
+
+        /* ---------------- MODAL ---------------- */
         function openModal(jobId) {
             const job = jobsData.find(j => j.id === jobId);
-            const content = document.getElementById('modalContent');
+            if (!job) return;
 
+            const content = document.getElementById('modalContent');
             content.innerHTML = `
-                <div style="margin-bottom:20px;">
-                    <span class="job-tag tag-mode">${job.mode}</span>
-                    <span class="job-tag" style="margin-left:10px;">${job.type}</span>
+                <div style="margin-bottom:25px;">
+                    <span class="job-tag tag-important">${job.mode}</span>
+                    <span class="job-tag">${job.type}</span>
                 </div>
-                <h2 style="font-family:'Syncopate'; font-size:1.6rem; margin-bottom:20px; border-bottom:1px solid #222; padding-bottom:20px;">${job.title.toUpperCase()}</h2>
+        
+                <h2 style="font-family:'Syncopate'; font-size:1.6rem; margin-bottom:25px; border-bottom:1px solid #222; padding-bottom:20px; color:#fff;">
+                    ${job.title.toUpperCase()}
+                </h2>
+        
                 <div class="modal-body">
                     <p>${job.description}</p>
-                    
-                    <strong>🔧 JOB REQUIREMENTS</strong>
+        
+                    <strong>🔧 REQUIREMENTS</strong>
                     <p>${job.requirements.map(r => `• ${r}`).join('<br>')}</p>
-                    
-                    ${job.expectations ? `<strong>⚠️ IMPORTANT EXPECTATIONS</strong><p>${job.expectations.map(e => `• ${e}`).join('<br>')}</p>` : ''}
-                    
-                    ${job.workOn ? `<strong>🚀 WHAT YOU’LL WORK ON</strong><p>${job.workOn.map(w => `• ${w}`).join('<br>')}</p>` : ''}
-                    
-                    ${job.growthPath ? `<strong>📈 GROWTH PATH</strong><p>${job.growthPath.map(g => `📌 ${g}`).join('<br>')}</p>` : ''}
-                    
-                    <a href="${job.applyUrl}" target="_blank" class="apply-now" style="display:inline-block; margin-top:40px; padding:18px 45px; background:#fff; color:#000; text-decoration:none; font-family:'Syncopate'; font-size:0.7rem; font-weight:700; letter-spacing:3px;">APPLY FOR POSITION</a>
-                </div>`;
+        
+                    ${job.workOn ? `
+                        <strong>🚀 PROJECTS</strong>
+                        <p>${job.workOn.map(w => `• ${w}`).join('<br>')}</p>
+                    ` : ''}
+        
+                    <a href="${job.applyUrl}" target="_blank" class="apply-now"
+                        style="display:inline-block; margin-top:40px; padding:18px 45px; background:#fff; color:#000; text-decoration:none; font-family:'Syncopate'; font-size:0.7rem; font-weight:700; letter-spacing:3px;">
+                        APPLY FOR POSITION
+                    </a>
+                </div>
+            `;
+
             document.getElementById('jobModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
         }
@@ -293,9 +399,19 @@
             document.body.style.overflow = 'auto';
         }
 
-        ['jobSearch', 'modeFilter', 'typeFilter', 'locationFilter'].forEach(id =>
-            document.getElementById(id).addEventListener(id === 'jobSearch' ? 'input' : 'change', handleFilters));
+        // Close modal if user clicks outside the content box
+        window.onclick = function (event) {
+            const modal = document.getElementById('jobModal');
+            if (event.target == modal) closeModal();
+        }
 
+        /* ---------------- EVENTS ---------------- */
+        document.getElementById('jobSearch').addEventListener('input', handleFilters);
+        document.getElementById('modeFilter').addEventListener('change', handleFilters);
+        document.getElementById('typeFilter').addEventListener('change', handleFilters);
+        document.getElementById('locationFilter').addEventListener('change', handleFilters);
+
+        /* ---------------- INIT ---------------- */
         loadCareers();
     </script>
 </body>
