@@ -112,6 +112,11 @@
             border-color: rgba(212, 175, 55, 0.3);
         }
 
+        .tag-id {
+            color: #00aaff;
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
         /* --- MODAL --- */
         .modal-overlay {
             position: fixed;
@@ -233,7 +238,6 @@
     <script>
         let jobsData = [];
 
-        // Holds current user selections
         const filterState = {
             search: "",
             mode: "all",
@@ -250,23 +254,21 @@
             return value && value.trim() !== '';
         }
 
-        /* ---------------- LOAD DATA ---------------- */
         async function loadCareers() {
             try {
                 const response = await fetch('careers.json');
                 const rawData = await response.json();
 
-                // Process data and store normalized versions for filtering
-                jobsData = rawData.map(job => ({
-                    ...job,
-                    modeNorm: normalize(job.mode),
-                    typeNorm: normalize(job.type),
-                    locationNorm: normalize(job.location)
-                }));
+                jobsData = rawData
+                    .filter(job => job.active === true)
+                    .map(job => ({
+                        ...job,
+                        modeNorm: normalize(job.mode),
+                        typeNorm: normalize(job.type),
+                        locationNorm: normalize(job.location)
+                    }));
 
-                // Populate dropdowns based on ALL available data once
                 generateDynamicFilters(jobsData);
-                // Initial display
                 displayJobs(jobsData);
 
             } catch (error) {
@@ -276,7 +278,6 @@
             }
         }
 
-        /* ---------------- FILTER ENGINE ---------------- */
         function handleFilters() {
             filterState.search = document.getElementById('jobSearch').value.toLowerCase();
             filterState.mode = document.getElementById('modeFilter').value;
@@ -295,8 +296,6 @@
             displayJobs(filtered);
         }
 
-        /* ---------------- DYNAMIC FILTERS ---------------- */
-        // This function builds unique options from the JSON data
         function generateDynamicFilters(data) {
             const buildOptions = (keyNorm, keyOriginal) => {
                 const uniqueValues = new Map();
@@ -311,7 +310,6 @@
             const populateSelect = (id, optionsMap, label) => {
                 const select = document.getElementById(id);
                 let html = `<option value="all">ALL ${label}</option>`;
-
                 optionsMap.forEach((original, norm) => {
                     html += `<option value="${norm}">${original.toUpperCase()}</option>`;
                 });
@@ -331,7 +329,7 @@
                 container.innerHTML = `
                 <div style="text-align:center; padding: 60px; grid-column: 1/-1; border: 1px dashed #222;">
                     <p style="opacity:0.4; font-family:'Syncopate'; font-size: 0.7rem; letter-spacing: 2px;">
-                        NO POSITIONS MATCH THESE CRITERIA.
+                        CHECK BACK SOON FOR NEW OPPORTUNITIES.
                     </p>
                 </div>`;
                 return;
@@ -339,17 +337,19 @@
 
             container.innerHTML = jobs.map(job => `
                 <div class="job-card" onclick="openModal(${job.id})">
-                    <div>
+                    <div style="width: 100%;">
+                        
                         <div class="job-title" style="font-family:'Syncopate'; letter-spacing:2px; font-size:1.1rem; color:#fff;">
                             ${job.title}
                         </div>
         
                         <div class="job-meta">
+                            <span class="job-tag tag-id">ID: ${job.id}</span>
                             ${isValid(job.mode) ? `<span class="job-tag tag-important">${job.mode}</span>` : ''}
                             ${isValid(job.type) ? `<span class="job-tag">${job.type}</span>` : ''}
-                            ${job.modeNorm !== 'remote' && isValid(job.location) ?
-                    `<span class="job-tag" style="opacity:0.5;">${job.location}</span>` : ''}
+                            ${job.modeNorm !== 'remote' && isValid(job.location) ? `<span class="job-tag" style="opacity:0.5;">${job.location}</span>` : ''}
                         </div>
+                        
                     </div>
                     <div style="font-size: 1.2rem; opacity: 0.3; color:#fff;">→</div>
                 </div>
@@ -357,68 +357,65 @@
         }
 
         /* ---------------- MODAL ---------------- */
-function openModal(jobId) {
-    const job = jobsData.find(j => j.id === jobId);
-    if (!job) return;
+        function openModal(jobId) {
+            const job = jobsData.find(j => j.id === jobId);
+            if (!job) return;
 
-    const content = document.getElementById('modalContent');
-    
-    // Helper to generate list items from an array
-    const renderList = (title, items) => {
-        if (!items || items.length === 0) return '';
-        return `
-            <strong> ${title}</strong>
-            <p>${items.map(item => `• ${item}`).join('<br>')}</p>
-        `;
-    };
+            const content = document.getElementById('modalContent');
 
-    content.innerHTML = `
-        <div style="margin-bottom:25px;">
-            ${isValid(job.mode) ? `<span class="job-tag tag-important">${job.mode}</span>` : ''}
-            ${isValid(job.type) ? `<span class="job-tag">${job.type}</span>` : ''}
-        </div>
+            const renderList = (title, items) => {
+                if (!items || items.length === 0) return '';
+                return `
+                    <strong> ${title}</strong>
+                    <p>${items.map(item => `• ${item}`).join('<br>')}</p>
+                `;
+            };
 
-        <h2 style="font-family:'Syncopate'; font-size:1.6rem; margin-bottom:25px; border-bottom:1px solid #222; padding-bottom:20px; color:#fff;">
-            ${job.title.toUpperCase()}
-        </h2>
+            content.innerHTML = `
+                <div style="margin-bottom:25px; display: flex; gap: 10px; flex-wrap: wrap;">
+                    <span class="job-tag tag-id" style="margin-bottom:0;">ID: ${job.id}</span>
+                    ${isValid(job.mode) ? `<span class="job-tag tag-important">${job.mode}</span>` : ''}
+                    ${isValid(job.type) ? `<span class="job-tag">${job.type}</span>` : ''}
+                </div>
 
-        <div class="modal-body">
-            <p>${job.description}</p>
+                <h2 style="font-family:'Syncopate'; font-size:1.6rem; margin-bottom:25px; border-bottom:1px solid #222; padding-bottom:20px; color:#fff;">
+                    ${job.title.toUpperCase()}
+                </h2>
 
-            ${renderList('REQUIREMENTS', job.requirements)}
-            ${renderList('EXPECTATIONS', job.expectations)}
-            ${renderList('PROJECTS', job.workOn)}
-            ${renderList('GROWTH PATH', job.growthPath)}
+                <div class="modal-body">
+                    <p>${job.description}</p>
 
-            <a href="${job.applyUrl}" target="_blank" class="apply-now"
-                style="display:inline-block; margin-top:40px; padding:18px 45px; background:#fff; color:#000; text-decoration:none; font-family:'Syncopate'; font-size:0.7rem; font-weight:700; letter-spacing:3px; transition: opacity 0.3s;">
-                APPLY FOR POSITION
-            </a>
-        </div>
-    `;
+                    ${renderList('REQUIREMENTS', job.requirements)}
+                    ${renderList('EXPECTATIONS', job.expectations)}
+                    ${renderList('PROJECTS', job.workOn)}
+                    ${renderList('GROWTH PATH', job.growthPath)}
 
-    document.getElementById('jobModal').style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-}
+                    <a href="${job.applyUrl}" target="_blank" class="apply-now"
+                        style="display:inline-block; margin-top:40px; padding:18px 45px; background:#fff; color:#000; text-decoration:none; font-family:'Syncopate'; font-size:0.7rem; font-weight:700; letter-spacing:3px; transition: opacity 0.3s;">
+                        APPLY FOR POSITION
+                    </a>
+                </div>
+            `;
+
+            document.getElementById('jobModal').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
 
         function closeModal() {
             document.getElementById('jobModal').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
 
-        // Close modal if user clicks outside the content box
         window.onclick = function (event) {
             const modal = document.getElementById('jobModal');
             if (event.target == modal) closeModal();
         }
 
-        /* ---------------- EVENTS ---------------- */
         document.getElementById('jobSearch').addEventListener('input', handleFilters);
         document.getElementById('modeFilter').addEventListener('change', handleFilters);
         document.getElementById('typeFilter').addEventListener('change', handleFilters);
         document.getElementById('locationFilter').addEventListener('change', handleFilters);
 
-        /* ---------------- INIT ---------------- */
         loadCareers();
     </script>
 </body>

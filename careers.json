@@ -1,7 +1,8 @@
 [
     {
-        "id": 1,
+        "id": 180839,
         "title": "Content Validator (Telugu + English)",
+        "active": true,
         "mode": "Remote",
         "type": "Part-time",
         "location": " ",
@@ -31,8 +32,9 @@
         "applyUrl": "YOUR_GOOGLE_FORM_LINK"
     },
     {
-        "id": 2,
+        "id": 265830,
         "title": "Content Writer (Telugu + English)",
+        "active": true,
         "mode": "Remote",
         "type": "Part-time",
         "location": " ",
@@ -62,8 +64,9 @@
         "applyUrl": "YOUR_GOOGLE_FORM_LINK"
     },
     {
-        "id": 3,
+        "id": 355563,
         "title": "Frontend UI/UX Developer Intern",
+        "active": true,
         "mode": "Remote",
         "type": "Internship",
         "location": " ",
@@ -95,8 +98,9 @@
         "applyUrl": "YOUR_GOOGLE_FORM_LINK"
     },
     {
-        "id": 4,
+        "id": 680297,
         "title": "React + Firebase Developer Intern",
+        "active": true,
         "mode": "Remote",
         "type": "Internship",
         "location": " ",
@@ -128,8 +132,9 @@
         "applyUrl": "YOUR_GOOGLE_FORM_LINK"
     },
     {
-        "id": 5,
+        "id": 552860,
         "title": "React Native + Firebase Developer Intern",
+        "active": true,
         "mode": "Remote",
         "type": "Internship",
         "location": " ",
@@ -160,71 +165,73 @@
         "applyUrl": "YOUR_GOOGLE_FORM_LINK"
     },
     {
-  "id": 6,
-  "title": "Database / Backend Developer Intern",
-  "mode": "Remote",
-  "type": "Internship",
-  "location": " ",
-  "description": "Work on backend architecture, database design, and scalable system development using modern databases such as MongoDB, MySQL, and Firebase. The role focuses on building production-ready applications with efficient data handling and API integrations.",
-  "requirements": [
-    "Hands-on experience with at least one database: MongoDB / MySQL / Firebase",
-    "Strong understanding of database design (SQL or NoSQL)",
-    "Experience with Firebase (Authentication, Firestore / Realtime DB) OR REST APIs with backend",
-    "Basic knowledge of backend development (Node.js / Express or similar)",
-    "Understanding of CRUD operations, indexing, and query optimization"
-  ],
-  "expectations": [
-    "Must have practical project experience (not just theoretical knowledge)",
-    "Minimum 3 hours per day commitment",
-    "Availability on weekends for critical tasks if required",
-    "Open to students and early professionals",
-    "Willingness to learn and adapt to different database technologies"
-  ],
-  "workOn": [
-    "Designing and managing databases (SQL & NoSQL)",
-    "Building scalable backend systems",
-    "API development and integration",
-    "Real-time applications using Firebase",
-    "Collaboration with frontend and mobile teams"
-  ],
-  "growthPath": [
-    "Phase 1 – Internship (0–3 Months): Unpaid evaluation",
-    "Phase 2 – Apprenticeship (3–6 Months): Stipend-based selection",
-    "Phase 3 – Full-Time Opportunity: Performance-based offer"
-  ],
-  "applyUrl": "YOUR_GOOGLE_FORM_LINK"
-},
+        "id": 267617,
+        "title": "Database / Backend Developer Intern",
+        "active": true,
+        "mode": "Remote",
+        "type": "Internship",
+        "location": " ",
+        "description": "Work on backend architecture, database design, and scalable system development using modern databases such as MongoDB, MySQL, and Firebase. The role focuses on building production-ready applications with efficient data handling and API integrations.",
+        "requirements": [
+            "Hands-on experience with at least one database: MongoDB / MySQL / Firebase",
+            "Strong understanding of database design (SQL or NoSQL)",
+            "Experience with Firebase (Authentication, Firestore / Realtime DB) OR REST APIs with backend",
+            "Basic knowledge of backend development (Node.js / Express or similar)",
+            "Understanding of CRUD operations, indexing, and query optimization"
+        ],
+        "expectations": [
+            "Must have practical project experience (not just theoretical knowledge)",
+            "Minimum 3 hours per day commitment",
+            "Availability on weekends for critical tasks if required",
+            "Open to students and early professionals",
+            "Willingness to learn and adapt to different database technologies"
+        ],
+        "workOn": [
+            "Designing and managing databases (SQL & NoSQL)",
+            "Building scalable backend systems",
+            "API development and integration",
+            "Real-time applications using Firebase",
+            "Collaboration with frontend and mobile teams"
+        ],
+        "growthPath": [
+            "Phase 1 – Internship (0–3 Months): Unpaid evaluation",
+            "Phase 2 – Apprenticeship (3–6 Months): Stipend-based selection",
+            "Phase 3 – Full-Time Opportunity: Performance-based offer"
+        ],
+        "applyUrl": "YOUR_GOOGLE_FORM_LINK"
+    },
     {
-    "id": 7,
-    "title": "Fashion Designer (Creative Partner)",
-    "mode": "Remote",
-    "type": "Part-time",
-    "location": " ",
-    "description": "We are building a next-generation fashion brand and looking for highly creative Fashion Designers who want to think and work like owners. This is an opportunity to build your portfolio, showcase creativity, and create real market impact.",
-    "requirements": [
-        "Strong fashion design skills and creative thinking",
-        "Ability to deliver high-quality, market-ready designs",
-        "Exceptional creativity and originality",
-        "Understanding of trends, styles, and audience preferences",
-        "Basic to intermediate knowledge of textile and apparel industry",
-        "Knowledge of printing and production techniques (DTF, DTG, Screen Printing, Puff Printing, Embroidery, UV Printing)"
-    ],
-    "expectations": [
-        "Ownership mindset and consistency",
-        "Ability to deliver original and high-quality work",
-        "Willingness to collaborate and iterate based on feedback"
-    ],
-    "workOn": [
-        "Designing apparel collections (T-Shirts, Hoodies, Sweatshirts, Pants, Caps)",
-        "Developing creative concepts for fashion products",
-        "Building personal design identity and portfolio",
-        "Working as a creative partner in a fashion brand"
-    ],
-    "growthPath": [
-        "Phase 1 – Pilot Project: Creative exploration and initial product launches",
-        "Phase 2 – Revenue Sharing: Earnings based on product sales performance",
-        "Phase 3 – Long-Term Role: Opportunity to become a full-time creative partner"
-    ],
-    "applyUrl": "YOUR_GOOGLE_FORM_LINK"
-}
+        "id": 903184,
+        "title": "Fashion Designer (Creative Partner)",
+        "active": false     ,
+        "mode": "Remote",
+        "type": "Part-time",
+        "location": " ",
+        "description": "We are building a next-generation fashion brand and looking for highly creative Fashion Designers who want to think and work like owners. This is an opportunity to build your portfolio, showcase creativity, and create real market impact.",
+        "requirements": [
+            "Strong fashion design skills and creative thinking",
+            "Ability to deliver high-quality, market-ready designs",
+            "Exceptional creativity and originality",
+            "Understanding of trends, styles, and audience preferences",
+            "Basic to intermediate knowledge of textile and apparel industry",
+            "Knowledge of printing and production techniques (DTF, DTG, Screen Printing, Puff Printing, Embroidery, UV Printing)"
+        ],
+        "expectations": [
+            "Ownership mindset and consistency",
+            "Ability to deliver original and high-quality work",
+            "Willingness to collaborate and iterate based on feedback"
+        ],
+        "workOn": [
+            "Designing apparel collections (T-Shirts, Hoodies, Sweatshirts, Pants, Caps)",
+            "Developing creative concepts for fashion products",
+            "Building personal design identity and portfolio",
+            "Working as a creative partner in a fashion brand"
+        ],
+        "growthPath": [
+            "Phase 1 – Pilot Project: Creative exploration and initial product launches",
+            "Phase 2 – Revenue Sharing: Earnings based on product sales performance",
+            "Phase 3 – Long-Term Role: Opportunity to become a full-time creative partner"
+        ],
+        "applyUrl": "YOUR_GOOGLE_FORM_LINK"
+    }
 ]
