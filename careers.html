@@ -357,42 +357,49 @@
         }
 
         /* ---------------- MODAL ---------------- */
-        function openModal(jobId) {
-            const job = jobsData.find(j => j.id === jobId);
-            if (!job) return;
+function openModal(jobId) {
+    const job = jobsData.find(j => j.id === jobId);
+    if (!job) return;
 
-            const content = document.getElementById('modalContent');
-            content.innerHTML = `
-                <div style="margin-bottom:25px;">
-                    <span class="job-tag tag-important">${job.mode}</span>
-                    <span class="job-tag">${job.type}</span>
-                </div>
-        
-                <h2 style="font-family:'Syncopate'; font-size:1.6rem; margin-bottom:25px; border-bottom:1px solid #222; padding-bottom:20px; color:#fff;">
-                    ${job.title.toUpperCase()}
-                </h2>
-        
-                <div class="modal-body">
-                    <p>${job.description}</p>
-        
-                    <strong>🔧 REQUIREMENTS</strong>
-                    <p>${job.requirements.map(r => `• ${r}`).join('<br>')}</p>
-        
-                    ${job.workOn ? `
-                        <strong>🚀 PROJECTS</strong>
-                        <p>${job.workOn.map(w => `• ${w}`).join('<br>')}</p>
-                    ` : ''}
-        
-                    <a href="${job.applyUrl}" target="_blank" class="apply-now"
-                        style="display:inline-block; margin-top:40px; padding:18px 45px; background:#fff; color:#000; text-decoration:none; font-family:'Syncopate'; font-size:0.7rem; font-weight:700; letter-spacing:3px;">
-                        APPLY FOR POSITION
-                    </a>
-                </div>
-            `;
+    const content = document.getElementById('modalContent');
+    
+    // Helper to generate list items from an array
+    const renderList = (title, items) => {
+        if (!items || items.length === 0) return '';
+        return `
+            <strong>🔧 ${title}</strong>
+            <p>${items.map(item => `• ${item}`).join('<br>')}</p>
+        `;
+    };
 
-            document.getElementById('jobModal').style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-        }
+    content.innerHTML = `
+        <div style="margin-bottom:25px;">
+            ${isValid(job.mode) ? `<span class="job-tag tag-important">${job.mode}</span>` : ''}
+            ${isValid(job.type) ? `<span class="job-tag">${job.type}</span>` : ''}
+        </div>
+
+        <h2 style="font-family:'Syncopate'; font-size:1.6rem; margin-bottom:25px; border-bottom:1px solid #222; padding-bottom:20px; color:#fff;">
+            ${job.title.toUpperCase()}
+        </h2>
+
+        <div class="modal-body">
+            <p>${job.description}</p>
+
+            ${renderList('REQUIREMENTS', job.requirements)}
+            ${renderList('EXPECTATIONS', job.expectations)}
+            ${renderList('PROJECTS', job.workOn)}
+            ${renderList('GROWTH PATH', job.growthPath)}
+
+            <a href="${job.applyUrl}" target="_blank" class="apply-now"
+                style="display:inline-block; margin-top:40px; padding:18px 45px; background:#fff; color:#000; text-decoration:none; font-family:'Syncopate'; font-size:0.7rem; font-weight:700; letter-spacing:3px; transition: opacity 0.3s;">
+                APPLY FOR POSITION
+            </a>
+        </div>
+    `;
+
+    document.getElementById('jobModal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
 
         function closeModal() {
             document.getElementById('jobModal').style.display = 'none';
