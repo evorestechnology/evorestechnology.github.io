@@ -367,7 +367,7 @@ function openModal(jobId) {
     const renderList = (title, items) => {
         if (!items || items.length === 0) return '';
         return `
-            <strong>🔧 ${title}</strong>
+            <strong> ${title}</strong>
             <p>${items.map(item => `• ${item}`).join('<br>')}</p>
         `;
     };
