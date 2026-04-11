@@ -42,9 +42,12 @@ async function loadCareers() {
                 // Check if a specific job was requested via URL immediately after loading
                 checkUrlForJob();
 
-            "<p style='opacity:0.5; text-align:center;'>Check back soon for new opportunities.</p>";
-    }
-}
+            } catch (error) {
+                console.error("Data error:", error);
+                document.getElementById('jobList').innerHTML =
+                    "<p style='opacity:0.5; text-align:center;'>Check back soon for new opportunities.</p>";
+            }
+        }
 
 function handleFilters() {
     filterState.search = document.getElementById('jobSearch').value.toLowerCase();
