@@ -1,6 +1,7 @@
 let jobsData = [];
 
-const useJsonFile = false; // Set to false to use Google Apps Script data source
+// Set to false to fetch from Google Sheets
+const useJsonFile = false; 
 
 const filterState = {
     search: "",
@@ -18,36 +19,85 @@ function isValid(value) {
     return value && value.trim() !== '';
 }
 
+// Safely converts Google Sheet text cells into arrays for bullet points
+function parseList(data) {
+    if (!data) return [];
+    if (Array.isArray(data)) return data; // Already an array (from JSON)
+    if (typeof data === 'string') {
+        // Split by newlines, clean up whitespace, and remove empty items
+        return data.split(/\n/).map(item => item.replace(/^[•\-\*]\s*/, '').trim()).filter(item => item !== '');
+    }
+    return [];
+}
+
 async function loadCareers() {
+    const container = document.getElementById('jobList');
+    
+    // 1. Inject Loading Spinner
+    container.innerHTML = `
+        <div style="grid-column: 1/-1; display: flex; flex-direction: column; align-items: center; padding: 80px 0;">
+            <div style="width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: #d4af37; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            <p style="margin-top: 20px; font-family: 'Syncopate', sans-serif; font-size: 0.7rem; letter-spacing: 3px; color: #888;">LOADING POSITIONS...</p>
+            <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+        </div>
+    `;
+
     try {
         const dataUrl = useJsonFile
             ? 'careers.json'
             : 'https://script.google.com/macros/s/AKfycbz1M67rUOVyZiajZNRSpstarChU6pWy3P9rkxqmSFiug6yWJVl1EOuUVX4-fwuwS3sTrQ/exec';
 
-        const response = await fetch(dataUrl);
-        const rawData = await response.json();
+        // 2. Add 'follow' to handle Google's automatic redirects
+        const response = await fetch(dataUrl, { redirect: "follow" });
+        const rawResponse = await response.json();
+        
+        // Handle variations in how the data might be wrapped
+        const dataArray = Array.isArray(rawResponse) ? rawResponse : (rawResponse.data || []);
 
-        jobsData = rawData
-            .filter(job => job.active === true)
+        // 3. Map Sheet Headers & JSON Keys
+        jobsData = dataArray
+            .filter(job => {
+                // Support both JSON true/false and Google Sheet "Active"/"Closed" text
+                const status = job.Status || job.status || job.active;
+                return status === true || String(status).toLowerCase() === 'active';
+            })
             .map(job => ({
-                ...job,
-                modeNorm: normalize(job.mode),
-                typeNorm: normalize(job.type),
-                locationNorm: normalize(job.location)
+                id: job.ID || job.id,
+                title: job['Job Title'] || job.title,
+                description: job.Description || job.description,
+                mode: job.Mode || job.mode || '',
+                type: job.Type || job.type || '',
+                location: job.Location || job.location || '',
+                applyUrl: job['Form Link'] || job.applyUrl,
+                
+                // Convert text blocks to arrays
+                requirements: parseList(job.Requirements || job.requirements),
+                expectations: parseList(job.Expectations || job.expectations),
+                workOn: parseList(job['Work Responsibilities'] || job.workOn),
+                growthPath: parseList(job['Growth Path'] || job.growthPath),
+                
+                // Normalize for filters
+                modeNorm: normalize(job.Mode || job.mode),
+                typeNorm: normalize(job.Type || job.type),
+                locationNorm: normalize(job.Location || job.location)
             }));
 
         generateDynamicFilters(jobsData);
         displayJobs(jobsData);
 
-                // Check if a specific job was requested via URL immediately after loading
-                checkUrlForJob();
+        // Check if a specific job was requested via URL immediately after loading
+        checkUrlForJob();
 
-            } catch (error) {
-                console.error("Data error:", error);
-                document.getElementById('jobList').innerHTML =
-                    "<p style='opacity:0.5; text-align:center;'>Check back soon for new opportunities.</p>";
-            }
-        }
+    } catch (error) {
+        console.error("Data error:", error);
+        container.innerHTML = `
+            <div style="text-align:center; padding: 60px; grid-column: 1/-1; border: 1px dashed #222;">
+                <p style="opacity:0.4; font-family:'Syncopate'; font-size: 0.7rem; letter-spacing: 2px;">
+                    UNABLE TO LOAD OPPORTUNITIES. PLEASE TRY AGAIN LATER.
+                </p>
+            </div>`;
+    }
+}
 
 function handleFilters() {
     filterState.search = document.getElementById('jobSearch').value.toLowerCase();
@@ -107,7 +157,7 @@ function displayJobs(jobs) {
     }
 
     container.innerHTML = jobs.map(job => `
-        <div class="job-card" onclick="openModal(${job.id})">
+        <div class="job-card" onclick="openModal('${job.id}')">
             <div style="width: 100%;">
                 
                 <div class="job-title" style="font-family:'Syncopate'; letter-spacing:2px; font-size:1.1rem; color:#fff;">
@@ -129,7 +179,8 @@ function displayJobs(jobs) {
 
 /* ---------------- MODAL ---------------- */
 function openModal(jobId) {
-    const job = jobsData.find(j => j.id === jobId);
+    // Ensure string comparison to prevent ID mismatch errors
+    const job = jobsData.find(j => String(j.id) === String(jobId));
     if (!job) return;
 
     const content = document.getElementById('modalContent');
@@ -216,10 +267,8 @@ async function shareJob(id) {
     const urlToShare = window.location.origin + window.location.pathname + '?jobId=' + id;
 
     try {
-        // First copy the link to clipboard
         await navigator.clipboard.writeText(urlToShare);
 
-        // Then try to show native share options based on device
         if (navigator.share) {
             await navigator.share({
                 title: 'EvoRES Careers',
@@ -231,7 +280,6 @@ async function shareJob(id) {
         }
     } catch (error) {
         console.error("Error sharing link:", error);
-        // Fallback message if clipboard/share API fails
         showNotification("Job link copied to clipboard successfully!");
     }
 }
@@ -241,16 +289,13 @@ function checkUrlForJob() {
     const jobId = params.get('jobId');
 
     if (jobId) {
-        // jobsData only contains active=true jobs based on loadCareers filtering
-        const job = jobsData.find(j => j.id.toString() === jobId);
+        const job = jobsData.find(j => String(j.id) === String(jobId));
 
         if (job) {
             openModal(job.id);
         } else {
             showNotification("This job was closed or could not be found. Please check the website for other available jobs.");
         }
-
-        // Optional: Clean URL so the check doesn't fire continuously on manual refresh
         window.history.replaceState({}, document.title, window.location.pathname);
     }
 }
