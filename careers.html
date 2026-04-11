@@ -172,6 +172,56 @@
             margin-bottom: 15px;
         }
 
+        /* --- NOTIFICATION CONTAINER --- */
+        .notification-container {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #080808;
+            border: 1px solid #d4af37;
+            padding: 20px 30px;
+            z-index: 9999;
+            width: max-content;
+            max-width: 90%;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.9);
+        }
+
+        .notification-container p {
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .notification-container a {
+            color: #d4af37;
+            text-decoration: underline;
+        }
+
+        .notification-btn {
+            padding: 10px 25px;
+            background: #d4af37;
+            color: #000;
+            border: none;
+            font-family: 'Syncopate', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: opacity 0.3s;
+        }
+
+        .notification-btn:hover {
+            opacity: 0.8;
+        }
+
         @media (max-width: 768px) {
             .career-section {
                 padding: 40px 5%;
@@ -239,6 +289,11 @@
         </div>
     </div>
 
+    <div id="globalNotification" class="notification-container">
+        <p id="notificationMsg"></p>
+        <button class="notification-btn" onclick="closeNotification()">OK</button>
+    </div>
+
     <footer>
         <div class="footer-logo"><b>E<span class="brand-vo">vo</span>RES TECHNOLOGY LLP</b></div>
         <p style="font-size: 0.6rem; letter-spacing: 3px; margin-top: 20px; opacity: 0.3;">© 2026 EvoRES TECHNOLOGY LLP
@@ -280,6 +335,9 @@
 
                 generateDynamicFilters(jobsData);
                 displayJobs(jobsData);
+
+                // Check if a specific job was requested via URL immediately after loading
+                checkUrlForJob();
 
             } catch (error) {
                 console.error("Data error:", error);
@@ -366,7 +424,7 @@
             `).join('');
         }
 
-        /* ---------------- MODAL ---------------- */
+        /* ---------------- MODAL & NEW FUNCTIONALITY ---------------- */
         function openModal(jobId) {
             const job = jobsData.find(j => j.id === jobId);
             if (!job) return;
@@ -400,10 +458,21 @@
                     ${renderList('PROJECTS', job.workOn)}
                     ${renderList('GROWTH PATH', job.growthPath)}
 
-                    <a href="${job.applyUrl}" target="_blank" class="apply-now"
-                        style="display:inline-block; margin-top:40px; padding:18px 45px; background:#fff; color:#000; text-decoration:none; font-family:'Syncopate'; font-size:0.7rem; font-weight:700; letter-spacing:3px; transition: opacity 0.3s;">
-                        APPLY FOR POSITION
-                    </a>
+                    <div style="display: flex; align-items: center; gap: 15px; margin-top: 40px; flex-wrap: wrap;">
+                        <a href="${job.applyUrl}" target="_blank" class="apply-now" onclick="handleApply(event, '${job.applyUrl}')"
+                            style="padding:18px 45px; background:#fff; color:#000; text-decoration:none; font-family:'Syncopate'; font-size:0.7rem; font-weight:700; letter-spacing:3px; transition: opacity 0.3s;">
+                            APPLY FOR POSITION
+                        </a>
+                        
+                        <button onclick="shareJob('${job.id}')" title="Share this job"
+                            style="background: transparent; border: 1px solid rgba(255,255,255,0.2); padding: 13px 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s;"
+                            onmouseover="this.style.borderColor='#d4af37'; this.style.backgroundColor='rgba(255,255,255,0.05)'"
+                            onmouseout="this.style.borderColor='rgba(255,255,255,0.2)'; this.style.backgroundColor='transparent'">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#fff" viewBox="0 0 24 24">
+                                <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/>
+                            </svg>
+                        </button>
+                    </div>
                 </div>
             `;
 
@@ -419,6 +488,68 @@
         window.onclick = function (event) {
             const modal = document.getElementById('jobModal');
             if (event.target == modal) closeModal();
+        }
+
+        // --- NEW FEATURES LOGIC ---
+
+        function showNotification(message) {
+            const notif = document.getElementById('globalNotification');
+            document.getElementById('notificationMsg').innerHTML = message;
+            notif.style.display = 'flex';
+        }
+
+        function closeNotification() {
+            document.getElementById('globalNotification').style.display = 'none';
+        }
+
+        function handleApply(event, url) {
+            if (!url || url === 'undefined' || url.trim() === '' || (!url.startsWith('http') && !url.includes('forms'))) {
+                event.preventDefault();
+                showNotification("There was an error at our side. We are trying to fix it soon, please be patient.<br><br>For any issues, please <a href='index.html#contact'>contact us</a>.");
+            }
+        }
+
+        async function shareJob(id) {
+            const urlToShare = window.location.origin + window.location.pathname + '?jobId=' + id;
+
+            try {
+                // First copy the link to clipboard
+                await navigator.clipboard.writeText(urlToShare);
+
+                // Then try to show native share options based on device
+                if (navigator.share) {
+                    await navigator.share({
+                        title: 'EvoRES Careers',
+                        text: 'Check out this job opening at EvoRES Technology LLP!',
+                        url: urlToShare
+                    });
+                } else {
+                    showNotification("Job link copied to clipboard successfully!");
+                }
+            } catch (error) {
+                console.error("Error sharing link:", error);
+                // Fallback message if clipboard/share API fails
+                showNotification("Job link copied to clipboard successfully!");
+            }
+        }
+
+        function checkUrlForJob() {
+            const params = new URLSearchParams(window.location.search);
+            const jobId = params.get('jobId');
+
+            if (jobId) {
+                // jobsData only contains active=true jobs based on loadCareers filtering
+                const job = jobsData.find(j => j.id.toString() === jobId);
+
+                if (job) {
+                    openModal(job.id);
+                } else {
+                    showNotification("This job was closed or could not be found. Please check the website for other available jobs.");
+                }
+
+                // Optional: Clean URL so the check doesn't fire continuously on manual refresh
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
         }
 
         document.getElementById('jobSearch').addEventListener('input', handleFilters);
