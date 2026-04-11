@@ -1,0 +1,17 @@
+# Robots.txt for EvoRES Technology LLP
+# Allow all search engines to crawl the site
+
+User-agent: *
+Allow: /
+
+# Specific rules for better crawling
+Disallow: /admin/
+Disallow: /private/
+Disallow: /*.json$
+Disallow: /images/
+
+# Sitemap location
+Sitemap: https://evorestechnology.com/sitemap.xml
+
+# Crawl delay (optional - adjust if needed)
+Crawl-delay: 1
