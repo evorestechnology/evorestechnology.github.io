@@ -1,6 +1,6 @@
 let jobsData = [];
 
-const useJsonFile = true; // Set to false to use Google Apps Script data source
+const useJsonFile = false; // Set to false to use Google Apps Script data source
 
 const filterState = {
     search: "",
