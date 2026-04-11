@@ -4,11 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Join EvoRES Technology LLP. Explore career opportunities in our innovative PaaS solutions company. We're hiring talented engineers and product specialists.">
+    <meta name="description"
+        content="Join EvoRES Technology LLP. Explore career opportunities in our innovative PaaS solutions company. We're hiring talented engineers and product specialists.">
     <meta name="keywords" content="Careers, Jobs, EvoRES Technology, PaaS, Engineering Careers, India Tech Jobs">
     <meta name="author" content="EvoRES Technology LLP">
     <meta property="og:title" content="Careers | EvoRES Technology LLP">
-    <meta property="og:description" content="Join EvoRES Technology LLP. Explore career opportunities in our innovative PaaS solutions company.">
+    <meta property="og:description"
+        content="Join EvoRES Technology LLP. Explore career opportunities in our innovative PaaS solutions company.">
     <meta property="og:url" content="https://evorestechnology.com/careers.html">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
@@ -319,30 +321,102 @@
             return value && value.trim() !== '';
         }
 
-        async function loadCareers() {
-            try {
-                const response = await fetch('careers.json');
-                const rawData = await response.json();
+        // Safely converts strings (from Sheets) or arrays (from JSON) into bullet points
+        function parseList(data) {
+            if (!data) return [];
+            if (Array.isArray(data)) return data;
+            if (typeof data === 'string') {
+                return data.split(/\n/).map(item => item.replace(/^[•\-\*]\s*/, '').trim()).filter(item => item !== '');
+            }
+            return [];
+        }
 
-                jobsData = rawData
-                    .filter(job => job.active === true)
+        async function loadCareers() {
+            const container = document.getElementById('jobList');
+
+            // 1. Inject Loading Spinner dynamically
+            container.innerHTML = `
+                <div style="grid-column: 1/-1; display: flex; flex-direction: column; align-items: center; padding: 80px 0;">
+                    <div style="width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.1); border-top-color: #d4af37; border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                    <p style="margin-top: 20px; font-family: 'Syncopate', sans-serif; font-size: 0.7rem; letter-spacing: 3px; color: #888;">LOADING POSITIONS...</p>
+                    <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
+                </div>
+            `;
+
+            const remoteApiUrl = 'https://script.google.com/macros/s/AKfycbz1M67rUOVyZiajZNRSpstarChU6pWy3P9rkxqmSFiug6yWJVl1EOuUVX4-fwuwS3sTrQ/exec';
+            const localJsonUrl = 'careers.json';
+
+            let rawResponse = null;
+
+            try {
+                // ATTEMPT 1: Fetch from Web API
+                console.log("[Status] Attempting to fetch data from Web API...");
+                try {
+                    const response = await fetch(remoteApiUrl, { redirect: "follow" });
+                    if (!response.ok) throw new Error(`API responded with status: ${response.status}`);
+                    rawResponse = await response.json();
+                    console.log("[Success] Data fetched from Web API successfully.");
+                } catch (apiError) {
+                    // ATTEMPT 2: Fallback to local JSON
+                    console.warn("[Warning] Web API fetch failed. Reason:", apiError.message);
+                    console.log("[Status] Falling back to local JSON file...");
+
+                    const localResponse = await fetch(localJsonUrl);
+                    if (!localResponse.ok) throw new Error(`Local JSON missing or responded with status: ${localResponse.status}`);
+                    rawResponse = await localResponse.json();
+                    console.log("[Success] Data fetched from local JSON file successfully.");
+                }
+
+                // Ensure data is an array (handle different JSON wrappers)
+                const dataArray = Array.isArray(rawResponse) ? rawResponse : (rawResponse?.data || []);
+
+                if (dataArray.length === 0) {
+                    console.warn("[Warning] The fetched data array is empty.");
+                } else {
+                    console.log(`[Debug] Raw Data received: ${dataArray.length} items.`);
+                }
+
+                // Map Sheet Headers & JSON Keys
+                jobsData = dataArray
+                    .filter(job => {
+                        // Supports both proper JSON boolean or Google Sheet "Active" text
+                        const status = job.Status !== undefined ? job.Status : (job.status !== undefined ? job.status : job.active);
+                        return status === true || String(status).toLowerCase() === 'active';
+                    })
                     .map(job => ({
-                        ...job,
-                        modeNorm: normalize(job.mode),
-                        typeNorm: normalize(job.type),
-                        locationNorm: normalize(job.location)
+                        id: job.ID !== undefined ? job.ID : job.id,
+                        title: job['Job Title'] || job.title || 'Untitled Position',
+                        description: job.Description || job.description || '',
+                        mode: job.Mode || job.mode || '',
+                        type: job.Type || job.type || '',
+                        location: job.Location || job.location || '',
+                        applyUrl: job['Form Link'] || job.applyUrl || '',
+
+                        // Use parseList for all array-based outputs
+                        requirements: parseList(job.Requirements || job.requirements),
+                        expectations: parseList(job.Expectations || job.expectations),
+                        workOn: parseList(job['Work Responsibilities'] || job.workOn),
+                        growthPath: parseList(job['Growth Path'] || job.growthPath),
+
+                        modeNorm: normalize(job.Mode || job.mode),
+                        typeNorm: normalize(job.Type || job.type),
+                        locationNorm: normalize(job.Location || job.location)
                     }));
+
+                console.log(`[Debug] Active Jobs to render: ${jobsData.length} items.`, jobsData);
 
                 generateDynamicFilters(jobsData);
                 displayJobs(jobsData);
-
-                // Check if a specific job was requested via URL immediately after loading
                 checkUrlForJob();
 
             } catch (error) {
-                console.error("Data error:", error);
-                document.getElementById('jobList').innerHTML =
-                    "<p style='opacity:0.5; text-align:center;'>Check back soon for new opportunities.</p>";
+                console.error("[Critical Error] Both remote and local data sources failed.", error);
+                container.innerHTML = `
+                    <div style="text-align:center; padding: 60px; grid-column: 1/-1; border: 1px dashed #222;">
+                        <p style="opacity:0.4; font-family:'Syncopate'; font-size: 0.7rem; letter-spacing: 2px;">
+                            UNABLE TO LOAD OPPORTUNITIES. PLEASE TRY AGAIN LATER.
+                        </p>
+                    </div>`;
             }
         }
 
@@ -389,7 +463,6 @@
             populateSelect('locationFilter', buildOptions('locationNorm', 'location'), 'LOCATIONS');
         }
 
-        /* ---------------- DISPLAY JOBS ---------------- */
         function displayJobs(jobs) {
             const container = document.getElementById('jobList');
 
@@ -404,13 +477,13 @@
             }
 
             container.innerHTML = jobs.map(job => `
-                <div class="job-card" onclick="openModal(${job.id})">
+                <div class="job-card" onclick="openModal('${job.id}')">
                     <div style="width: 100%;">
                         
                         <div class="job-title" style="font-family:'Syncopate'; letter-spacing:2px; font-size:1.1rem; color:#fff;">
                             ${job.title}
                         </div>
-        
+
                         <div class="job-meta">
                             <span class="job-tag tag-id">ID: ${job.id}</span>
                             ${isValid(job.mode) ? `<span class="job-tag tag-important">${job.mode}</span>` : ''}
@@ -424,9 +497,9 @@
             `).join('');
         }
 
-        /* ---------------- MODAL & NEW FUNCTIONALITY ---------------- */
         function openModal(jobId) {
-            const job = jobsData.find(j => j.id === jobId);
+            // String comparison safely matches IDs regardless of type
+            const job = jobsData.find(j => String(j.id) === String(jobId));
             if (!job) return;
 
             const content = document.getElementById('modalContent');
@@ -490,8 +563,7 @@
             if (event.target == modal) closeModal();
         }
 
-        // --- NEW FEATURES LOGIC ---
-
+        // --- SHARE & NOTIFICATION LOGIC ---
         function showNotification(message) {
             const notif = document.getElementById('globalNotification');
             document.getElementById('notificationMsg').innerHTML = message;
@@ -513,10 +585,7 @@
             const urlToShare = window.location.origin + window.location.pathname + '?jobId=' + id;
 
             try {
-                // First copy the link to clipboard
                 await navigator.clipboard.writeText(urlToShare);
-
-                // Then try to show native share options based on device
                 if (navigator.share) {
                     await navigator.share({
                         title: 'EvoRES Careers',
@@ -528,7 +597,6 @@
                 }
             } catch (error) {
                 console.error("Error sharing link:", error);
-                // Fallback message if clipboard/share API fails
                 showNotification("Job link copied to clipboard successfully!");
             }
         }
@@ -538,16 +606,12 @@
             const jobId = params.get('jobId');
 
             if (jobId) {
-                // jobsData only contains active=true jobs based on loadCareers filtering
-                const job = jobsData.find(j => j.id.toString() === jobId);
-
+                const job = jobsData.find(j => String(j.id) === String(jobId));
                 if (job) {
                     openModal(job.id);
                 } else {
                     showNotification("This job was closed or could not be found. Please check the website for other available jobs.");
                 }
-
-                // Optional: Clean URL so the check doesn't fire continuously on manual refresh
                 window.history.replaceState({}, document.title, window.location.pathname);
             }
         }
